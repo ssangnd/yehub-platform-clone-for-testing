@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l /Users/lenhattanh/lenhattanh1995/yehub-platform/yehub-demo/src/pages/campaigns/*.tsx)",
+      "Read(//Users/lenhattanh/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/requesting-code-review/**)",
+      "Bash(ls src/auth/guards/*.spec.ts)",
+      "Bash(git -C /Users/lenhattanh/lenhattanh1995/yehub-platform status)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('scripts', {}\\)\\)\")",
+      "Bash(pnpm prisma:migrate --name fix-campaign-membership-added-by-set-null)",
+      "Bash(node -e ':*)",
+      "Bash(node -e \"const p = require\\('./package.json'\\); console.log\\(Object.keys\\(p.scripts\\).filter\\(s => s.includes\\('format'\\)\\).join\\(', '\\) || 'no format script'\\)\")",
+      "WebFetch(domain:developers.facebook.com)"
+    ]
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
+  }
+}

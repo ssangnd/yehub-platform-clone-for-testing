@@ -1,0 +1,22 @@
+{
+  "name": "yehub-e2e",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:server": "E2E_WITH_SERVER=1 playwright test",
+    "test:headed": "playwright test --headed --workers=1",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "docker:up": "docker compose up --build --wait",
+    "docker:down": "docker compose down",
+    "docker:clean": "docker compose down -v"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.59.0"
+  }
+}

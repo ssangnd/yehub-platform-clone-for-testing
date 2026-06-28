@@ -1,0 +1,223 @@
+@font-face {
+  font-family: 'Paytone One';
+  src: url('/fonts/PaytoneOne-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'League Spartan';
+  src: url('/fonts/LeagueSpartan-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: 'League Spartan', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'Fira Code', monospace;
+  --font-display: 'Paytone One', ui-sans-serif, system-ui, sans-serif;
+
+  --color-cta: var(--cta);
+  --color-cta-foreground: var(--cta-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --color-facebook: #1877F2;
+  --color-instagram: #E4405F;
+  --color-tiktok: #000000;
+  --color-youtube: #FF0000;
+  --color-threads: #000000;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Light mode (default) */
+:root {
+  --radius: 0.625rem;
+
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(0 0% 18%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 18%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(0 0% 18%);
+  --primary: hsl(47 92% 50%);
+  --primary-foreground: hsl(0 0% 18%);
+  --secondary: hsl(210 17% 98%);
+  --secondary-foreground: hsl(0 0% 18%);
+  --muted: hsl(210 17% 98%);
+  --muted-foreground: hsl(215 16% 47%);
+  --accent: hsl(210 17% 98%);
+  --accent-foreground: hsl(0 0% 18%);
+  --destructive: hsl(0 84% 60%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(220 13% 91%);
+  --input: hsl(220 13% 91%);
+  --ring: hsl(47 92% 50%);
+
+  --chart-1: hsl(47 92% 50%);
+  --chart-2: hsl(30 90% 55%);
+  --chart-3: hsl(142 76% 36%);
+  --chart-4: hsl(0 0% 45%);
+  --chart-5: hsl(347 77% 50%);
+
+  --cta: hsl(47 92% 50%);
+  --cta-foreground: hsl(0 0% 18%);
+  --warning: hsl(39.6 95.2% 52.2%);
+  --warning-foreground: hsl(0 0% 100%);
+  --success: hsl(142.1 76.2% 36.3%);
+  --success-foreground: hsl(0 0% 100%);
+  --info: hsl(217.2 91.2% 59.8%);
+  --info-foreground: hsl(0 0% 100%);
+
+  --sidebar: hsl(210 17% 98%);
+  --sidebar-foreground: hsl(0 0% 18%);
+  --sidebar-primary: hsl(47 92% 50%);
+  --sidebar-primary-foreground: hsl(0 0% 18%);
+  --sidebar-accent: hsl(0 0% 100%);
+  --sidebar-accent-foreground: hsl(0 0% 18%);
+  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-ring: hsl(47 92% 50%);
+}
+
+/* Dark mode (OLED) */
+.dark {
+  --background: hsl(40 30% 6%);
+  --foreground: hsl(210 40% 98%);
+  --card: hsl(40 20% 10%);
+  --card-foreground: hsl(210 40% 98%);
+  --popover: hsl(40 20% 10%);
+  --popover-foreground: hsl(210 40% 98%);
+  --primary: hsl(47 92% 50%);
+  --primary-foreground: hsl(0 0% 18%);
+  --secondary: hsl(40 10% 15%);
+  --secondary-foreground: hsl(210 40% 98%);
+  --muted: hsl(40 10% 15%);
+  --muted-foreground: hsl(215 20% 65%);
+  --accent: hsl(40 10% 15%);
+  --accent-foreground: hsl(210 40% 98%);
+  --destructive: hsl(0 63% 31%);
+  --destructive-foreground: hsl(210 40% 98%);
+  --border: hsl(40 10% 20%);
+  --input: hsl(40 10% 20%);
+  --ring: hsl(47 92% 50%);
+
+  --chart-1: hsl(47 92% 50%);
+  --chart-2: hsl(30 90% 55%);
+  --chart-3: hsl(160 60% 45%);
+  --chart-4: hsl(0 0% 55%);
+  --chart-5: hsl(340 75% 55%);
+
+  --cta: hsl(47 92% 50%);
+  --cta-foreground: hsl(0 0% 18%);
+  --warning: hsl(39.6 95.2% 52.2%);
+  --warning-foreground: hsl(0 0% 100%);
+  --success: hsl(142.1 76.2% 36.3%);
+  --success-foreground: hsl(0 0% 100%);
+  --info: hsl(217.2 91.2% 59.8%);
+  --info-foreground: hsl(0 0% 100%);
+
+  --sidebar: hsl(40 30% 6%);
+  --sidebar-foreground: hsl(210 40% 98%);
+  --sidebar-primary: hsl(47 92% 50%);
+  --sidebar-primary-foreground: hsl(0 0% 18%);
+  --sidebar-accent: hsl(40 10% 15%);
+  --sidebar-accent-foreground: hsl(210 40% 98%);
+  --sidebar-border: hsl(40 10% 20%);
+  --sidebar-ring: hsl(47 92% 50%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+
+  /* Focus visible ring for keyboard navigation */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Selection color */
+  ::selection {
+    background-color: hsl(47 92% 50% / 0.3);
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

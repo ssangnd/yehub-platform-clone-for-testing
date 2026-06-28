@@ -1,0 +1,27 @@
+import { BullModule } from '@nestjs/bullmq';
+import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+
+@Module({
+  imports: [
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        connection: {
+          url: config.getOrThrow<string>('REDIS_URL'),
+        },
+        defaultJobOptions: {
+          attempts: 3,
+          backoff: {
+            type: 'exponential',
+            delay: 1000,
+          },
+          removeOnComplete: { count: 100 },
+          removeOnFail: { count: 500 },
+        },
+      }),
+    }),
+  ],
+  exports: [BullModule],
+})
+export class QueueModule {}

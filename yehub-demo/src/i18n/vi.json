@@ -1,0 +1,22 @@
+{
+  "app": {
+    "name": "Social Listening",
+    "tagline": "Theo dõi. Phân tích. Hành động."
+  },
+  "nav": {
+    "dashboard": "Tổng quan",
+    "projects": "Dự án",
+    "campaigns": "Chiến dịch",
+    "comments": "Bình luận",
+    "profiles": "Hồ sơ",
+    "insights": "Phân tích",
+    "sentiment": "Cảm xúc",
+    "emotions": "Cảm xúc chi tiết",
+    "topics": "Chủ đề",
+    "painPoints": "Vấn đề",
+    "culturalSignals": "Tín hiệu văn hóa",
+    "alerts": "Cảnh báo",
+    "settings": "Cài đặt",
+    "admin": "Quản trị"
+  }
+}

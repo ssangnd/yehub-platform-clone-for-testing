@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" fill="none">
+  <!-- What's HOT: fire, trending arrows, viral sparks, heat waves -->
+
+  <!-- Large flame -->
+  <g transform="translate(350, 60)" opacity="0.1">
+    <path d="M40 120c-22 0-40-18-40-40 0-15 8-28 15-38 3-4 5-10 5-16 0 0 8 10 10 20 2-8 8-20 16-26 0 0-2 14 4 22 8-6 14-18 14-30 12 14 16 28 16 42 0 36-18 66-40 66z" fill="#C8A851"/>
+  </g>
+
+  <!-- Rising trend arrows -->
+  <g transform="translate(280, 140)" opacity="0.12">
+    <polyline points="0,50 15,35 30,40 50,15 65,20 80,0" stroke="#C8A851" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <polygon points="78,-4 86,0 80,6" fill="#C8A851"/>
+  </g>
+  <g transform="translate(380, 200)" opacity="0.08">
+    <polyline points="0,30 12,20 24,25 40,8 52,12 60,0" stroke="#C8A851" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <polygon points="58,-3 65,0 60,5" fill="#C8A851"/>
+  </g>
+
+  <!-- Heat/pulse rings -->
+  <circle cx="400" cy="100" r="20" stroke="#C8A851" opacity="0.08" stroke-width="1.5" fill="none"/>
+  <circle cx="400" cy="100" r="35" stroke="#C8A851" opacity="0.05" stroke-width="1" fill="none"/>
+  <circle cx="400" cy="100" r="50" stroke="#C8A851" opacity="0.03" stroke-width="1" fill="none"/>
+
+  <!-- Lightning bolt (viral) -->
+  <g transform="translate(440, 150)" opacity="0.12">
+    <polygon points="12,0 4,18 14,18 6,36 24,14 14,14 20,0" fill="#C8A851"/>
+  </g>
+
+  <!-- Spark/explosion dots -->
+  <g transform="translate(330, 50)" opacity="0.14">
+    <line x1="8" y1="0" x2="8" y2="6" stroke="#C8A851" stroke-width="2" stroke-linecap="round"/>
+    <line x1="0" y1="8" x2="6" y2="8" stroke="#C8A851" stroke-width="2" stroke-linecap="round"/>
+    <line x1="16" y1="8" x2="10" y2="8" stroke="#C8A851" stroke-width="2" stroke-linecap="round"/>
+    <line x1="8" y1="16" x2="8" y2="10" stroke="#C8A851" stroke-width="2" stroke-linecap="round"/>
+    <line x1="2" y1="2" x2="5" y2="5" stroke="#C8A851" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="14" y1="2" x2="11" y2="5" stroke="#C8A851" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="2" y1="14" x2="5" y2="11" stroke="#C8A851" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="14" y1="14" x2="11" y2="11" stroke="#C8A851" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Hot topic bubbles -->
+  <g transform="translate(260, 220)" opacity="0.07">
+    <rect x="0" y="0" width="55" height="22" rx="11" fill="#C8A851"/>
+    <text x="27" y="15" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="white" text-anchor="middle">#HOT</text>
+  </g>
+  <g transform="translate(340, 250)" opacity="0.06">
+    <rect x="0" y="0" width="60" height="20" rx="10" fill="#C8A851"/>
+    <text x="30" y="14" font-family="system-ui, sans-serif" font-size="8" font-weight="600" fill="white" text-anchor="middle">VIRAL</text>
+  </g>
+
+  <!-- Thermometer -->
+  <g transform="translate(460, 80)" opacity="0.09">
+    <rect x="3" y="0" width="8" height="50" rx="4" stroke="#C8A851" stroke-width="1.5" fill="none"/>
+    <rect x="4.5" y="20" width="5" height="29" rx="2.5" fill="#C8A851"/>
+    <circle cx="7" cy="58" r="8" stroke="#C8A851" stroke-width="1.5" fill="none"/>
+    <circle cx="7" cy="58" r="5" fill="#C8A851"/>
+  </g>
+
+  <!-- Scattered energy dots -->
+  <circle cx="300" cy="80" r="3" fill="#C8A851" opacity="0.1"/>
+  <circle cx="470" cy="240" r="2.5" fill="#C8A851" opacity="0.09"/>
+  <circle cx="250" cy="180" r="2" fill="#C8A851" opacity="0.08"/>
+  <circle cx="430" cy="270" r="3" fill="#C8A851" opacity="0.07"/>
+  <circle cx="320" cy="270" r="2" fill="#C8A851" opacity="0.09"/>
+  <circle cx="480" cy="50" r="2.5" fill="#C8A851" opacity="0.08"/>
+</svg>

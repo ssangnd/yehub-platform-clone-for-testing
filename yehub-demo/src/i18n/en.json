@@ -1,0 +1,64 @@
+{
+  "app": {
+    "name": "Social Listening",
+    "tagline": "Monitor. Analyze. Act."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "campaigns": "Campaigns",
+    "comments": "Comments",
+    "profiles": "Profiles",
+    "insights": "Insights",
+    "sentiment": "Sentiment",
+    "emotions": "Emotions",
+    "topics": "Topics",
+    "painPoints": "Pain Points",
+    "culturalSignals": "Cultural Signals",
+    "alerts": "Alerts",
+    "settings": "Settings",
+    "admin": "Admin"
+  },
+  "auth": {
+    "login": "Log In",
+    "logout": "Log Out",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password"
+  },
+  "common": {
+    "search": "Search...",
+    "filter": "Filter",
+    "export": "Export",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "showMore": "Show more",
+    "total": "Total",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "platforms": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "youtube": "YouTube",
+    "threads": "Threads"
+  },
+  "status": {
+    "draft": "Draft",
+    "active": "Active",
+    "paused": "Paused",
+    "completed": "Completed"
+  },
+  "sentiment": {
+    "positive": "Positive",
+    "neutral": "Neutral",
+    "negative": "Negative"
+  }
+}

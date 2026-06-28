@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 600" fill="none">
+  <!-- Abstract social/campaign network illustration -->
+  <!-- Uses gold primary (#C8A851) at very low opacity for subtle effect -->
+
+  <!-- Large decorative circles (nodes) -->
+  <circle cx="380" cy="120" r="60" fill="#C8A851" opacity="0.08"/>
+  <circle cx="420" cy="350" r="90" fill="#C8A851" opacity="0.06"/>
+  <circle cx="140" cy="480" r="50" fill="#C8A851" opacity="0.08"/>
+  <circle cx="300" cy="520" r="70" fill="#C8A851" opacity="0.06"/>
+
+  <!-- Connection lines -->
+  <line x1="380" y1="120" x2="420" y2="350" stroke="#C8A851" opacity="0.1" stroke-width="1.5"/>
+  <line x1="420" y1="350" x2="140" y2="480" stroke="#C8A851" opacity="0.1" stroke-width="1.5"/>
+  <line x1="140" y1="480" x2="300" y2="520" stroke="#C8A851" opacity="0.1" stroke-width="1.5"/>
+  <line x1="380" y1="120" x2="300" y2="520" stroke="#C8A851" opacity="0.07" stroke-width="1"/>
+
+  <!-- Small accent dots at nodes -->
+  <circle cx="380" cy="120" r="6" fill="#C8A851" opacity="0.18"/>
+  <circle cx="420" cy="350" r="8" fill="#C8A851" opacity="0.14"/>
+  <circle cx="140" cy="480" r="5" fill="#C8A851" opacity="0.18"/>
+  <circle cx="300" cy="520" r="7" fill="#C8A851" opacity="0.14"/>
+
+  <!-- Megaphone / broadcast waves -->
+  <g transform="translate(340, 80)" opacity="0.12">
+    <path d="M0 30 Q20 15 40 30 Q20 45 0 30Z" fill="#C8A851"/>
+    <path d="M45 20 Q55 30 45 40" stroke="#C8A851" stroke-width="2" fill="none"/>
+    <path d="M52 12 Q68 30 52 48" stroke="#C8A851" stroke-width="2" fill="none"/>
+    <path d="M60 4 Q82 30 60 56" stroke="#C8A851" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- Bar chart element -->
+  <g transform="translate(370, 310)" opacity="0.1">
+    <rect x="0" y="40" width="14" height="40" rx="3" fill="#C8A851"/>
+    <rect x="20" y="20" width="14" height="60" rx="3" fill="#C8A851"/>
+    <rect x="40" y="5" width="14" height="75" rx="3" fill="#C8A851"/>
+    <rect x="60" y="30" width="14" height="50" rx="3" fill="#C8A851"/>
+  </g>
+
+  <!-- Trend line -->
+  <g transform="translate(100, 430)" opacity="0.12">
+    <polyline points="0,40 20,30 40,35 60,15 80,20 100,5" stroke="#C8A851" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="100" cy="5" r="4" fill="#C8A851"/>
+  </g>
+
+  <!-- Speech bubbles -->
+  <g transform="translate(280, 470)" opacity="0.08">
+    <rect x="0" y="0" width="50" height="35" rx="10" fill="#C8A851"/>
+    <polygon points="12,35 18,45 24,35" fill="#C8A851"/>
+  </g>
+  <g transform="translate(350, 440)" opacity="0.06">
+    <rect x="0" y="0" width="40" height="28" rx="8" fill="#C8A851"/>
+    <polygon points="10,28 15,36 20,28" fill="#C8A851"/>
+  </g>
+
+  <!-- Floating hashtag -->
+  <g transform="translate(430, 180)" opacity="0.1">
+    <text font-family="system-ui, sans-serif" font-size="28" font-weight="700" fill="#C8A851">#</text>
+  </g>
+
+  <!-- Like heart -->
+  <g transform="translate(160, 510)" opacity="0.1">
+    <path d="M12 4C8 0 2 2 2 7c0 4 10 13 10 13s10-9 10-13c0-5-6-7-10-3z" fill="#C8A851"/>
+  </g>
+
+  <!-- Scattered small dots for texture -->
+  <circle cx="450" cy="200" r="3" fill="#C8A851" opacity="0.1"/>
+  <circle cx="320" cy="280" r="2" fill="#C8A851" opacity="0.12"/>
+  <circle cx="200" cy="550" r="3" fill="#C8A851" opacity="0.08"/>
+  <circle cx="460" cy="480" r="2.5" fill="#C8A851" opacity="0.1"/>
+  <circle cx="100" cy="400" r="2" fill="#C8A851" opacity="0.08"/>
+  <circle cx="350" cy="560" r="3" fill="#C8A851" opacity="0.07"/>
+</svg>

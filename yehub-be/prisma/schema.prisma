@@ -1,0 +1,491 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────
+
+enum GlobalRole {
+  ADMIN
+  INTERNAL_USER
+  AUTHORIZED_USER
+
+  @@map("global_role")
+}
+
+enum ProjectRole {
+  MANAGER
+  EXECUTIVE
+  ANALYST
+  VIEWER
+
+  @@map("project_role")
+}
+
+enum UserStatus {
+  INVITED
+  ACTIVE
+  INACTIVE
+
+  @@map("user_status")
+}
+
+enum Platform {
+  FACEBOOK
+  INSTAGRAM
+  TIKTOK
+  YOUTUBE
+  THREADS
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
+enum MediaType {
+  TEXT
+  IMAGE
+  VIDEO
+  CAROUSEL
+  STORY
+  REEL
+}
+
+enum Sentiment {
+  POSITIVE
+  NEGATIVE
+  NEUTRAL
+  MIXED
+}
+
+enum Emotion {
+  JOY
+  SADNESS
+  ANGER
+  FEAR
+  SURPRISE
+  DISGUST
+  TRUST
+  ANTICIPATION
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+
+  @@map("gender")
+}
+
+enum LinkedBy {
+  AUTO
+  MANUAL
+
+  @@map("linked_by")
+}
+
+enum SystemSettingType {
+  TEXT
+  BOOLEAN
+  NUMBER
+
+  @@map("system_setting_type")
+}
+
+// ─── Models ──────────────────────────────────────────────────────────
+
+model User {
+  id                     String      @id @default(uuid()) @db.Uuid
+  email                  String      @unique
+  password_hash          String?
+  name                   String
+  avatar                 String?
+  role                   GlobalRole  @default(AUTHORIZED_USER)
+  status                 UserStatus  @default(ACTIVE)
+  invited_by             String?     @db.Uuid
+  invitation_token_hash  String?
+  invitation_expires_at  DateTime?
+  invitation_accepted_at DateTime?
+  invitation_sent_at     DateTime?
+  reset_token_selector   String?     @unique
+  reset_token_hash       String?
+  reset_token_expires_at DateTime?
+  last_login_at          DateTime?
+  failed_login_attempts  Int         @default(0)
+  locked_at              DateTime?
+  locked_reason          String?
+  created_at             DateTime    @default(now())
+  updated_at             DateTime    @updatedAt
+
+  memberships            ProjectMembership[]
+  sessions               Session[]
+  campaignMemberships    CampaignMembership[] @relation("campaignMemberships")
+  addedCampaignMembers   CampaignMembership[] @relation("addedByCampaignMember")
+
+  @@index([status])
+  @@index([invitation_token_hash])
+  @@map("users")
+}
+
+model Session {
+  id                 String   @id @default(uuid()) @db.Uuid
+  user_id            String   @db.Uuid
+  refresh_token_hash String
+  device_name        String
+  os_name            String
+  ip_address         String
+  location           String?
+  last_active_at     DateTime @default(now())
+  created_at         DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("sessions")
+}
+
+model Project {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String    @unique
+  description String?
+  client_name String?   @db.VarChar(100)
+  logo        String?
+  active      Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  memberships ProjectMembership[]
+  campaigns   Campaign[]
+  categories  ProjectCategory[] @relation("categories")
+
+  @@index([active])
+  @@map("projects")
+}
+
+model Category {
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String   @unique @db.VarChar(100)
+  created_at DateTime @default(now())
+
+  projectCategories ProjectCategory[]
+
+  @@map("global_project_categories")
+}
+
+model ProjectCategory {
+  project_id  String @db.Uuid
+  category_id String @db.Uuid
+
+  project  Project  @relation("categories", fields: [project_id], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+
+  @@id([project_id, category_id])
+  @@index([category_id])
+  @@map("project_categories")
+}
+
+model ProjectMembership {
+  user_id    String     @db.Uuid
+  project_id String     @db.Uuid
+  role       ProjectRole
+  created_at DateTime   @default(now())
+
+  user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, project_id])
+  @@index([project_id])
+  @@map("project_memberships")
+}
+
+model Campaign {
+  id                       String         @id @default(uuid()) @db.Uuid
+  project_id               String         @db.Uuid
+  name                     String
+  description              String?
+  start_date               DateTime
+  end_date                 DateTime
+  status                   CampaignStatus @default(DRAFT)
+  platforms                Platform[]
+  metric_polling_interval  Int?
+  comments_polling_interval Int?
+  display_metrics          String[]
+  created_at               DateTime       @default(now())
+  updated_at               DateTime       @updatedAt
+  deleted_at               DateTime?
+
+  project              Project              @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  posts                Post[]
+  objectives           CampaignObjective[]  @relation("objectives")
+  campaignMemberships  CampaignMembership[]
+  apifyRuns            ApifyRun[]
+
+  @@index([project_id])
+  @@index([status])
+  @@map("campaigns")
+}
+
+model CampaignMembership {
+  user_id     String     @db.Uuid
+  campaign_id String     @db.Uuid
+  role        ProjectRole
+  added_by    String?    @db.Uuid
+  created_at  DateTime   @default(now())
+
+  user        User     @relation("campaignMemberships", fields: [user_id], references: [id], onDelete: Cascade)
+  campaign    Campaign @relation(fields: [campaign_id], references: [id], onDelete: Cascade)
+  addedByUser User?    @relation("addedByCampaignMember", fields: [added_by], references: [id], onDelete: SetNull)
+
+  @@id([user_id, campaign_id])
+  @@index([campaign_id])
+  @@map("campaign_memberships")
+}
+
+model Objective {
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String   @unique @db.VarChar(100)
+  created_at DateTime @default(now())
+
+  campaigns CampaignObjective[] @relation("campaigns")
+
+  @@map("global_campaign_objectives")
+}
+
+model CampaignObjective {
+  campaign_id  String @db.Uuid
+  objective_id String @db.Uuid
+
+  campaign  Campaign  @relation("objectives", fields: [campaign_id], references: [id], onDelete: Cascade)
+  objective Objective @relation("campaigns", fields: [objective_id], references: [id], onDelete: Cascade)
+
+  @@id([campaign_id, objective_id])
+  @@index([objective_id])
+  @@map("campaign_objectives")
+}
+
+model Post {
+  id                       String    @id @default(uuid()) @db.Uuid
+  campaign_id              String    @db.Uuid
+  platform                 Platform
+  platform_post_id         String
+  url                      String?
+  content                  String?
+  media_type               MediaType @default(TEXT)
+  comment_count            Int       @default(0)
+  polling_comment_override Int?
+  polling_metric_override  Int?
+  author_avatar            String?
+  author_name              String?
+  likes                    Int       @default(0)
+  shares                   Int       @default(0)
+  views                    Int       @default(0)
+  saved_count              Int       @default(0)
+  engagement               Int       @default(0)
+  published_at             DateTime?
+  kpi_targets              Json?
+  metrics_snapshot         Json?
+  last_poll_status         String?
+  last_polled_at           DateTime?
+  last_metric_polled_at    DateTime?
+  last_comment_polled_at   DateTime?
+  created_at               DateTime  @default(now())
+  updated_at               DateTime  @updatedAt
+  deleted_at               DateTime?
+
+  campaign Campaign  @relation(fields: [campaign_id], references: [id], onDelete: Cascade)
+  comments Comment[]
+  socialAccountPosts SocialAccountPost[]
+  apifyRuns ApifyRun[]
+
+  @@unique([campaign_id, platform, platform_post_id])
+  @@index([campaign_id])
+  @@index([last_polled_at])
+  @@index([engagement])
+  @@map("posts")
+}
+
+model Comment {
+  id                  String     @id @default(uuid()) @db.Uuid
+  post_id             String     @db.Uuid
+  platform_comment_id String
+  content             String
+  parent_comment_id   String?    @db.Uuid
+  language            String?
+  author_name         String?
+  author_profile_url  String?
+  platform            Platform   @default(FACEBOOK)
+  platform_created_at DateTime?
+  sentiment           Sentiment?
+  confidence_score    Float?
+  emotions            Emotion[]
+  is_noise            Boolean    @default(false)
+  like_count          Int        @default(0)
+  reply_count         Int        @default(0)
+  hashtags            Json?
+  mentions            Json?
+  social_account_id   String?    @db.Uuid
+  created_at          DateTime   @default(now())
+
+  post          Post           @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  parent        Comment?       @relation("CommentThread", fields: [parent_comment_id], references: [id], onDelete: SetNull)
+  childComments Comment[]      @relation("CommentThread")
+  socialAccount SocialAccount? @relation(fields: [social_account_id], references: [id], onDelete: SetNull)
+
+  @@index([post_id])
+  @@index([parent_comment_id])
+  @@index([is_noise])
+  @@index([social_account_id])
+  @@index([post_id, platform_created_at])
+  @@map("comments")
+}
+
+model Profile {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  description String?
+  tags        String[]
+  gender      Gender?
+  email       String?
+  phone       String?
+  avatar      String?
+  tier_id     String?  @db.Uuid
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  tier           KolTier?          @relation(fields: [tier_id], references: [id], onDelete: SetNull)
+  categories     ProfileCategory[]
+  socialAccounts SocialAccount[]
+
+  @@index([tier_id])
+  @@map("profiles")
+}
+
+model SystemSetting {
+  key           String            @id @db.VarChar(100)
+  type          SystemSettingType
+  value_text    String?
+  value_boolean Boolean?
+  value_number  Float?
+  updated_at    DateTime          @updatedAt
+  created_at    DateTime          @default(now())
+
+  @@map("system_settings")
+}
+
+model SocialAccount {
+  id               String   @id @default(uuid()) @db.Uuid
+  profile_id       String   @db.Uuid
+  platform         Platform
+  platform_user_id String
+  username         String?
+  display_name     String?
+  follower_count   Int       @default(0)
+  is_verified      Boolean   @default(false)
+  created_at       DateTime  @default(now())
+  last_polled_at   DateTime?
+  last_poll_status String?
+
+  profile            Profile             @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  comments           Comment[]
+  socialAccountPosts SocialAccountPost[]
+  apifyRuns          ApifyRun[]
+
+  @@unique([platform, platform_user_id])
+  @@index([profile_id])
+  @@map("social_accounts")
+}
+
+model KolCategory {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
+  description String?
+  color       String   @default("blue")
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  profiles ProfileCategory[]
+
+  @@map("kol_categories")
+}
+
+model KolTier {
+  id            String   @id @default(uuid()) @db.Uuid
+  name          String   @unique
+  description   String?
+  color         String   @default("blue")
+  min_followers Int      @default(0)
+  max_followers Int?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  profiles Profile[]
+
+  @@map("kol_tiers")
+}
+
+model ProfileCategory {
+  profile_id      String @db.Uuid
+  kol_category_id String @db.Uuid
+
+  profile     Profile     @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  kolCategory KolCategory @relation(fields: [kol_category_id], references: [id], onDelete: Cascade)
+
+  @@id([profile_id, kol_category_id])
+  @@index([kol_category_id])
+  @@map("profile_categories")
+}
+
+model SocialAccountPost {
+  social_account_id String   @db.Uuid
+  post_id           String   @db.Uuid
+  linked_by         LinkedBy @default(MANUAL)
+  created_at        DateTime @default(now())
+
+  socialAccount SocialAccount @relation(fields: [social_account_id], references: [id], onDelete: Cascade)
+  post          Post          @relation(fields: [post_id], references: [id], onDelete: Cascade)
+
+  @@id([social_account_id, post_id])
+  @@unique([post_id])
+  @@index([social_account_id])
+  @@map("social_account_posts")
+}
+
+model ApifyRun {
+  id                String    @id @default(uuid()) @db.Uuid
+  apify_run_id      String?   @unique
+  actor_id          String
+  job_type          String
+  status            String
+  campaign_id       String?   @db.Uuid
+  post_id           String?   @db.Uuid
+  social_account_id String?   @db.Uuid
+  started_at        DateTime?
+  finished_at       DateTime?
+  run_time_secs     Float?
+  compute_units     Float?
+  usage_total_usd   Float?
+  usage_usd         Json?
+  usage_finalized   Boolean   @default(false)
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+
+  campaign      Campaign?      @relation(fields: [campaign_id], references: [id], onDelete: SetNull)
+  post          Post?          @relation(fields: [post_id], references: [id], onDelete: SetNull)
+  socialAccount SocialAccount? @relation(fields: [social_account_id], references: [id], onDelete: SetNull)
+
+  @@index([campaign_id, started_at])
+  @@index([post_id])
+  @@index([social_account_id])
+  @@map("apify_runs")
+}

@@ -1,0 +1,137 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: yehub-e2e-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: yehub
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: yehub-e2e-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: yehub-e2e-minio
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+        mc alias set local http://minio:9000 minioadmin minioadmin &&
+        mc mb --ignore-existing local/yehub &&
+        mc anonymous set none local/yehub
+      "
+
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    container_name: yehub-e2e-smtp4dev
+    ports:
+      - "2525:25"
+      - "5555:80"
+
+  backend-migrate:
+    build:
+      context: ../yehub-be
+      dockerfile: Dockerfile
+      target: builder
+    command: ["pnpm", "prisma", "migrate", "deploy", "--schema=prisma/schema.prisma"]
+    container_name: yehub-e2e-migrate
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/yehub"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  backend-seed:
+    build:
+      context: ../yehub-be
+      dockerfile: Dockerfile
+      target: builder
+    container_name: yehub-e2e-seed
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/yehub"
+    command: ["pnpm", "tsx", "prisma/seed.ts"]
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+
+  backend:
+    build:
+      context: ../yehub-be
+      dockerfile: Dockerfile
+    container_name: yehub-e2e-backend
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: "3000"
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/yehub"
+      REDIS_URL: "redis://redis:6379"
+      JWT_SECRET: "docker-dev-jwt-secret-min16chars"
+      JWT_REFRESH_SECRET: "docker-dev-jwt-refresh-secret-min16chars"
+      FRONTEND_URL: "http://localhost:5173"
+      S3_ENDPOINT: "http://minio:9000"
+      S3_PUBLIC_ENDPOINT: "http://localhost:9000"
+      S3_FORCE_PATH_STYLE: "true"
+      S3_REGION: "us-east-1"
+      S3_BUCKET: "yehub"
+      S3_ACCESS_KEY: "minioadmin"
+      S3_SECRET_KEY: "minioadmin"
+      SMTP_HOST: "smtp4dev"
+      SMTP_PORT: "25"
+      SMTP_USER: "test"
+      SMTP_PASS: "test"
+      SMTP_FROM: "noreply@yehub.com"
+    depends_on:
+      backend-seed:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../yehub-fe
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: "http://localhost:3000/v1"
+    container_name: yehub-e2e-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:80"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
