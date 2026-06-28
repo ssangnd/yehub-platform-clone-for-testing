@@ -128,7 +128,12 @@ jobs:
       - name: Set image metadata
         id: meta
         run: |
-          TAG=${GITHUB_REF_NAME}
+          # Use tag name if triggered by tag push, otherwise use branch+sha
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF_NAME}"
+          else
+            TAG="manual-$(git rev-parse --short HEAD)"
+          fi
           URI=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
           echo "uri=${URI}:${TAG}" >> $GITHUB_OUTPUT
@@ -147,7 +152,7 @@ jobs:
             ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/arm64
+          platforms: linux/amd64    # native on ubuntu-latest — 4x faster than ARM64/QEMU emulation
 
   # ============================================================
   # Job 4: Scan Docker image with Trivy
@@ -215,7 +220,7 @@ jobs:
               "Update": "true"
             },
             "Ports": [{ "ContainerPort": 3000, "HostPort": 3000 }],
-            "Command": "node dist/src/main"
+            "Cmd": ["node", "dist/src/main"]
           }
           EOF
 
@@ -278,7 +283,7 @@ jobs:
               "Update": "true"
             },
             "Ports": [{ "ContainerPort": 3001, "HostPort": 3001 }],
-            "Command": "node dist/src/worker"
+            "Cmd": ["node", "dist/src/worker"]
           }
           EOF
 
