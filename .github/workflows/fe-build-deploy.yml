@@ -64,6 +64,9 @@ jobs:
     name: Scan Source Code (Trivy)
     runs-on: ubuntu-latest
     needs: ci
+    permissions:
+      security-events: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
