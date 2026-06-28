@@ -24,7 +24,7 @@ on:
 env:
   AWS_REGION: ap-southeast-1
   AWS_ACCOUNT_ID: 629687551655
-  ECR_REPOSITORY: projecta-app
+  ECR_REPOSITORY: project-ecommerce-app
   EB_APPLICATION: project-ecommerce-prod
   EB_ENV_API: project-ecommerce-prod-app1
   EB_ENV_WORKER: project-ecommerce-prod-worker
@@ -220,14 +220,23 @@ jobs:
               "Update": "true"
             },
             "Ports": [{ "ContainerPort": 3000, "HostPort": 3000 }],
-            "Cmd": ["node", "dist/src/main"]
+            "Cmd": ["node", "dist/src/main"],
+            "Volumes": [],
+            "Env": []
           }
           EOF
 
-      - name: Package and upload to S3
+      - name: Checkout for ebextensions
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: yehub-be/.ebextensions
+
+      - name: Package with ebextensions and upload to S3
         run: |
           TAG=${{ needs.build-push.outputs.image_tag }}
-          zip api-${TAG}.zip Dockerrun.aws.json
+          # Copy .ebextensions into deploy package so Beanstalk runs secret injection
+          cp -r yehub-be/.ebextensions .ebextensions
+          zip -r api-${TAG}.zip Dockerrun.aws.json .ebextensions/
           aws s3 cp api-${TAG}.zip s3://${{ env.S3_BUCKET }}/deployments/api-${TAG}.zip
 
       - name: Create Beanstalk application version
@@ -287,10 +296,18 @@ jobs:
           }
           EOF
 
-      - name: Package and upload to S3
+      - name: Checkout for ebextensions
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: yehub-be/.ebextensions
+
+      - name: Package worker with ebextensions and upload to S3
         run: |
           TAG=${{ needs.build-push.outputs.image_tag }}
-          zip worker-${TAG}.zip Dockerrun.aws.json
+          # Use worker-specific ebextensions (worker-sm secret)
+          mkdir -p .ebextensions
+          cp yehub-be/.ebextensions/1load-env-worker.config .ebextensions/1load-env.config
+          zip -r worker-${TAG}.zip Dockerrun.aws.json .ebextensions/
           aws s3 cp worker-${TAG}.zip s3://${{ env.S3_BUCKET }}/deployments/worker-${TAG}.zip
 
       - name: Create Beanstalk application version
