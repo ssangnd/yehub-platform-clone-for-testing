@@ -1,0 +1,303 @@
+name: Backend — Build, Scan & Deploy to Beanstalk
+
+on:
+  push:
+    tags:
+      - 'v*'          # Only deploy on version tags: v1.0.0, v1.2.3, etc.
+    paths:
+      - 'yehub-be/**'
+
+env:
+  AWS_REGION: ap-southeast-1
+  AWS_ACCOUNT_ID: 629687551655
+  ECR_REPOSITORY: projecta-app          # ECR repo name
+  EB_APPLICATION: project-ecommerce-prod
+  EB_ENV_API: project-ecommerce-prod-app1      # Beanstalk env for API
+  EB_ENV_WORKER: project-ecommerce-prod-worker  # Beanstalk env for Worker
+  S3_BUCKET: elasticbeanstalk-ap-southeast-1-629687551655
+
+jobs:
+  # ============================================================
+  # Job 1: CI — lint, test, build check
+  # ============================================================
+  ci:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: yehub-be
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: yehub-be/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+  # ============================================================
+  # Job 2: Scan source code with Trivy
+  # ============================================================
+  scan-source:
+    name: Scan Source Code (Trivy)
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner (filesystem)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: yehub-be
+          format: sarif
+          output: trivy-source-results.sarif
+          severity: CRITICAL,HIGH
+          exit-code: '0'          # Don't fail pipeline on findings — review only
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-source-results.sarif
+          category: trivy-source
+
+  # ============================================================
+  # Job 3: Build Docker image and push to ECR
+  # ============================================================
+  build-push:
+    name: Build & Push to ECR
+    runs-on: ubuntu-latest
+    needs: [ci, scan-source]
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tag }}
+      image_uri: ${{ steps.meta.outputs.uri }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set image metadata
+        id: meta
+        run: |
+          TAG=${GITHUB_REF_NAME}   # e.g. v1.0.0
+          URI=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+          echo "uri=${URI}:${TAG}" >> $GITHUB_OUTPUT
+          echo "repo=${URI}" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: yehub-be
+          file: yehub-be/Dockerfile
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.uri }}
+            ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/arm64    # t4g.micro is ARM64 Graviton
+
+  # ============================================================
+  # Job 4: Scan Docker image with Trivy
+  # ============================================================
+  scan-image:
+    name: Scan Docker Image (Trivy)
+    runs-on: ubuntu-latest
+    needs: build-push
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Run Trivy vulnerability scanner (image)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ needs.build-push.outputs.image_uri }}
+          format: sarif
+          output: trivy-image-results.sarif
+          severity: CRITICAL,HIGH
+          exit-code: '0'
+
+      - name: Upload Trivy image scan results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-image-results.sarif
+          category: trivy-image
+
+  # ============================================================
+  # Job 5: Deploy API to Beanstalk (app1)
+  # ============================================================
+  deploy-api:
+    name: Deploy API → Beanstalk (app1)
+    runs-on: ubuntu-latest
+    needs: [build-push, scan-image]
+    environment: production
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create Dockerrun.aws.json for API
+        run: |
+          cat > Dockerrun.aws.json << EOF
+          {
+            "AWSEBDockerrunVersion": "1",
+            "Image": {
+              "Name": "${{ needs.build-push.outputs.image_uri }}",
+              "Update": "true"
+            },
+            "Ports": [
+              {
+                "ContainerPort": 3000,
+                "HostPort": 3000
+              }
+            ],
+            "Command": "node dist/src/main"
+          }
+          EOF
+
+      - name: Package and upload to S3
+        run: |
+          TAG=${{ needs.build-push.outputs.image_tag }}
+          zip api-${TAG}.zip Dockerrun.aws.json
+          aws s3 cp api-${TAG}.zip s3://${{ env.S3_BUCKET }}/deployments/api-${TAG}.zip
+
+      - name: Create Beanstalk application version
+        run: |
+          TAG=${{ needs.build-push.outputs.image_tag }}
+          aws elasticbeanstalk create-application-version \
+            --application-name ${{ env.EB_APPLICATION }} \
+            --version-label api-${TAG} \
+            --source-bundle S3Bucket="${{ env.S3_BUCKET }}",S3Key="deployments/api-${TAG}.zip" \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Deploy to Beanstalk API environment
+        run: |
+          TAG=${{ needs.build-push.outputs.image_tag }}
+          aws elasticbeanstalk update-environment \
+            --application-name ${{ env.EB_APPLICATION }} \
+            --environment-name ${{ env.EB_ENV_API }} \
+            --version-label api-${TAG} \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Wait for deployment to complete
+        run: |
+          aws elasticbeanstalk wait environment-updated \
+            --application-name ${{ env.EB_APPLICATION }} \
+            --environment-names ${{ env.EB_ENV_API }} \
+            --region ${{ env.AWS_REGION }}
+
+  # ============================================================
+  # Job 6: Deploy Worker to Beanstalk (worker env)
+  # ============================================================
+  deploy-worker:
+    name: Deploy Worker → Beanstalk (worker)
+    runs-on: ubuntu-latest
+    needs: [build-push, scan-image]
+    environment: production
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create Dockerrun.aws.json for Worker
+        run: |
+          cat > Dockerrun.aws.json << EOF
+          {
+            "AWSEBDockerrunVersion": "1",
+            "Image": {
+              "Name": "${{ needs.build-push.outputs.image_uri }}",
+              "Update": "true"
+            },
+            "Ports": [
+              {
+                "ContainerPort": 3001,
+                "HostPort": 3001
+              }
+            ],
+            "Command": "node dist/src/worker"
+          }
+          EOF
+
+      - name: Package and upload to S3
+        run: |
+          TAG=${{ needs.build-push.outputs.image_tag }}
+          zip worker-${TAG}.zip Dockerrun.aws.json
+          aws s3 cp worker-${TAG}.zip s3://${{ env.S3_BUCKET }}/deployments/worker-${TAG}.zip
+
+      - name: Create Beanstalk application version
+        run: |
+          TAG=${{ needs.build-push.outputs.image_tag }}
+          aws elasticbeanstalk create-application-version \
+            --application-name ${{ env.EB_APPLICATION }} \
+            --version-label worker-${TAG} \
+            --source-bundle S3Bucket="${{ env.S3_BUCKET }}",S3Key="deployments/worker-${TAG}.zip" \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Deploy to Beanstalk Worker environment
+        run: |
+          TAG=${{ needs.build-push.outputs.image_tag }}
+          aws elasticbeanstalk update-environment \
+            --application-name ${{ env.EB_APPLICATION }} \
+            --environment-name ${{ env.EB_ENV_WORKER }} \
+            --version-label worker-${TAG} \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Wait for deployment to complete
+        run: |
+          aws elasticbeanstalk wait environment-updated \
+            --application-name ${{ env.EB_APPLICATION }} \
+            --environment-names ${{ env.EB_ENV_WORKER }} \
+            --region ${{ env.AWS_REGION }}
