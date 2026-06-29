@@ -113,23 +113,41 @@ jobs:
 
       - name: Create Dockerrun.aws.json
         run: |
+          IMAGE_URI="${{ needs.build-push.outputs.app_image_uri }}"
+          if [ -z "$IMAGE_URI" ]; then
+            echo "ERROR: app_image_uri is empty — build-push job did not produce an image URI."
+            echo "Make sure you run the full workflow (not re-run only the deploy job),"
+            echo "and that ECR_REPOSITORY_APP, AWS_ACCOUNT_ID, AWS_REGION secrets are set."
+            exit 1
+          fi
+          echo "Using image: $IMAGE_URI"
           cat > Dockerrun.aws.json << EOF
           {
             "AWSEBDockerrunVersion": "1",
             "Image": {
-              "Name": "${{ needs.build-push.outputs.app_image_uri }}",
+              "Name": "${IMAGE_URI}",
               "Update": "true"
             },
             "Ports": [{ "ContainerPort": 3000, "HostPort": 3000 }],
             "Cmd": ["node", "dist/src/main"]
           }
           EOF
+          echo "=== Dockerrun.aws.json ==="
+          cat Dockerrun.aws.json
 
       - name: Package and upload to S3
         run: |
           TAG=${{ needs.build-push.outputs.image_tag }}
-          cp -r yehub-be/.ebextensions .ebextensions
-          zip -r api-${TAG}.zip Dockerrun.aws.json .ebextensions/
+          # Build clean bundle in isolated dir — ONLY Dockerrun + ebextensions
+          # (no Dockerfile, or EB tries to build instead of pulling ECR image)
+          rm -rf bundle && mkdir bundle
+          cp Dockerrun.aws.json bundle/
+          cp -r yehub-be/.ebextensions bundle/.ebextensions
+          cd bundle
+          zip -r ../api-${TAG}.zip Dockerrun.aws.json .ebextensions/
+          cd ..
+          echo "=== Bundle contents ==="
+          unzip -l api-${TAG}.zip
           aws s3 cp api-${TAG}.zip s3://${{ env.S3_BUCKET }}/deployments/api-${TAG}.zip
 
       - name: Create Beanstalk app version
@@ -191,17 +209,25 @@ jobs:
 
       - name: Create Dockerrun.aws.json
         run: |
+          IMAGE_URI="${{ needs.build-push.outputs.worker_image_uri }}"
+          if [ -z "$IMAGE_URI" ]; then
+            echo "ERROR: worker_image_uri is empty — run the full workflow, not just the deploy job."
+            exit 1
+          fi
+          echo "Using image: $IMAGE_URI"
           cat > Dockerrun.aws.json << EOF
           {
             "AWSEBDockerrunVersion": "1",
             "Image": {
-              "Name": "${{ needs.build-push.outputs.worker_image_uri }}",
+              "Name": "${IMAGE_URI}",
               "Update": "true"
             },
             "Ports": [{ "ContainerPort": 3001, "HostPort": 3001 }],
             "Cmd": ["node", "dist/src/worker"]
           }
           EOF
+          echo "=== Dockerrun.aws.json ==="
+          cat Dockerrun.aws.json
 
       - name: Package and upload to S3
         run: |
