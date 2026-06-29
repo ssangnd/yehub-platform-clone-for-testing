@@ -41,8 +41,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       image_tag: ${{ steps.meta.outputs.tag }}
-      app_image_uri: ${{ steps.meta.outputs.app_uri }}
-      worker_image_uri: ${{ steps.meta.outputs.worker_uri }}
 
     steps:
       - uses: actions/checkout@v4
@@ -113,14 +111,17 @@ jobs:
 
       - name: Create Dockerrun.aws.json
         run: |
-          IMAGE_URI="${{ needs.build-push.outputs.app_image_uri }}"
-          if [ -z "$IMAGE_URI" ]; then
-            echo "ERROR: app_image_uri is empty — build-push job did not produce an image URI."
-            echo "Make sure you run the full workflow (not re-run only the deploy job),"
-            echo "and that ECR_REPOSITORY_APP, AWS_ACCOUNT_ID, AWS_REGION secrets are set."
+          # Reconstruct the image URI here from env (secrets) + tag.
+          # We CANNOT pass the full URI as a cross-job output because it contains
+          # AWS_ACCOUNT_ID (a secret) — GitHub masks secret-containing job outputs,
+          # which arrive empty in downstream jobs. Only the non-secret tag is passed.
+          TAG="${{ needs.build-push.outputs.image_tag }}"
+          if [ -z "$TAG" ]; then
+            echo "ERROR: image_tag is empty — run the full workflow, not just the deploy job."
             exit 1
           fi
-          echo "Using image: $IMAGE_URI"
+          IMAGE_URI="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_APP }}:${TAG}"
+          echo "Using image tag: $TAG"
           cat > Dockerrun.aws.json << EOF
           {
             "AWSEBDockerrunVersion": "1",
@@ -209,12 +210,14 @@ jobs:
 
       - name: Create Dockerrun.aws.json
         run: |
-          IMAGE_URI="${{ needs.build-push.outputs.worker_image_uri }}"
-          if [ -z "$IMAGE_URI" ]; then
-            echo "ERROR: worker_image_uri is empty — run the full workflow, not just the deploy job."
+          # Reconstruct URI from env (secrets) + tag — see note in deploy-api.
+          TAG="${{ needs.build-push.outputs.image_tag }}"
+          if [ -z "$TAG" ]; then
+            echo "ERROR: image_tag is empty — run the full workflow, not just the deploy job."
             exit 1
           fi
-          echo "Using image: $IMAGE_URI"
+          IMAGE_URI="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_WORKER }}:${TAG}"
+          echo "Using image tag: $TAG"
           cat > Dockerrun.aws.json << EOF
           {
             "AWSEBDockerrunVersion": "1",

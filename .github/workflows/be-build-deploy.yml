@@ -111,8 +111,6 @@ jobs:
     needs: [ci, scan-source]
     outputs:
       image_tag: ${{ steps.meta.outputs.tag }}
-      app_image_uri: ${{ steps.meta.outputs.app_uri }}
-      worker_image_uri: ${{ steps.meta.outputs.worker_uri }}
 
     steps:
       - uses: actions/checkout@v4
@@ -188,11 +186,17 @@ jobs:
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Build image reference
+        id: imgref
+        run: |
+          TAG="${{ needs.build-push.outputs.image_tag }}"
+          echo "uri=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_APP }}:${TAG}" >> $GITHUB_OUTPUT
+
       - name: Run Trivy vulnerability scanner (image)
         uses: aquasecurity/trivy-action@master
         continue-on-error: true
         with:
-          image-ref: ${{ needs.build-push.outputs.app_image_uri }}
+          image-ref: ${{ steps.imgref.outputs.uri }}
           format: sarif
           output: trivy-image-results.sarif
           severity: CRITICAL,HIGH
@@ -225,11 +229,21 @@ jobs:
 
       - name: Create Dockerrun.aws.json for API
         run: |
+          # Reconstruct URI from env (secrets) + tag. Cross-job outputs that
+          # contain AWS_ACCOUNT_ID (a secret) get masked to empty by GitHub,
+          # so we only pass the non-secret image_tag between jobs.
+          TAG="${{ needs.build-push.outputs.image_tag }}"
+          if [ -z "$TAG" ]; then
+            echo "ERROR: image_tag is empty — run the full workflow (Run workflow), not a single-job re-run."
+            exit 1
+          fi
+          IMAGE_URI="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_APP }}:${TAG}"
+          echo "Using image tag: $TAG"
           cat > Dockerrun.aws.json << EOF
           {
             "AWSEBDockerrunVersion": "1",
             "Image": {
-              "Name": "${{ needs.build-push.outputs.app_image_uri }}",
+              "Name": "${IMAGE_URI}",
               "Update": "true"
             },
             "Ports": [{ "ContainerPort": 3000, "HostPort": 3000 }],
@@ -238,6 +252,8 @@ jobs:
             "Env": []
           }
           EOF
+          echo "=== Dockerrun.aws.json ==="
+          cat Dockerrun.aws.json
 
       - name: Checkout for ebextensions
         uses: actions/checkout@v4
@@ -296,17 +312,27 @@ jobs:
 
       - name: Create Dockerrun.aws.json for Worker
         run: |
+          # Reconstruct URI from env (secrets) + tag — see note in deploy-api.
+          TAG="${{ needs.build-push.outputs.image_tag }}"
+          if [ -z "$TAG" ]; then
+            echo "ERROR: image_tag is empty — run the full workflow (Run workflow), not a single-job re-run."
+            exit 1
+          fi
+          IMAGE_URI="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_WORKER }}:${TAG}"
+          echo "Using image tag: $TAG"
           cat > Dockerrun.aws.json << EOF
           {
             "AWSEBDockerrunVersion": "1",
             "Image": {
-              "Name": "${{ needs.build-push.outputs.worker_image_uri }}",
+              "Name": "${IMAGE_URI}",
               "Update": "true"
             },
             "Ports": [{ "ContainerPort": 3001, "HostPort": 3001 }],
             "Cmd": ["node", "dist/src/worker"]
           }
           EOF
+          echo "=== Dockerrun.aws.json ==="
+          cat Dockerrun.aws.json
 
       - name: Checkout for ebextensions
         uses: actions/checkout@v4
