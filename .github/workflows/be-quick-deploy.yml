@@ -60,7 +60,7 @@ jobs:
       - name: Set image tag
         id: meta
         run: |
-          TAG="test-$(git rev-parse --short HEAD)"
+          TAG="test-$(git rev-parse --short HEAD)-$(date +%s)"
           BASE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
           echo "app_uri=${BASE}/${{ env.ECR_REPOSITORY_APP }}:${TAG}" >> $GITHUB_OUTPUT
