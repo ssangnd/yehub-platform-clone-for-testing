@@ -1,0 +1,67 @@
+name: Frontend — Quick Deploy (Build + S3)
+
+# ============================================================
+# Quick deploy for testing — skips lint, format check, and scan
+# DO NOT use for production releases — use fe-build-deploy.yml
+# ============================================================
+
+on:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  S3_BUCKET: ${{ secrets.S3_BUCKET_FRONTEND }}
+
+jobs:
+  build-deploy:
+    name: Build & Deploy → S3
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: yehub-fe/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: yehub-fe
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        working-directory: yehub-fe
+        run: pnpm build
+        env:
+          VITE_API_URL: /api/v1
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Sync to S3
+        run: |
+          aws s3 sync yehub-fe/dist/assets s3://${{ env.S3_BUCKET }}/assets \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete
+          aws s3 sync yehub-fe/dist s3://${{ env.S3_BUCKET }} \
+            --exclude "assets/*" \
+            --cache-control "no-cache, no-store, must-revalidate" \
+            --delete
+
+      - name: Invalidate CloudFront cache
+        if: ${{ env.CLOUDFRONT_DISTRIBUTION_ID != '' }}
+        env:
+          CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
