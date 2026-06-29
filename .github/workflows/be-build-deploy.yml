@@ -22,13 +22,14 @@ on:
         default: ''
 
 env:
-  AWS_REGION: ap-southeast-1
-  AWS_ACCOUNT_ID: 629687551655
-  ECR_REPOSITORY: project-ecommerce-app
-  EB_APPLICATION: project-ecommerce-prod
-  EB_ENV_API: project-ecommerce-prod-app1
-  EB_ENV_WORKER: project-ecommerce-prod-worker
-  S3_BUCKET: elasticbeanstalk-ap-southeast-1-629687551655
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  ECR_REPOSITORY_APP: ${{ secrets.ECR_REPOSITORY_APP }}
+  ECR_REPOSITORY_WORKER: ${{ secrets.ECR_REPOSITORY_WORKER }}
+  EB_APPLICATION: ${{ secrets.EB_APPLICATION }}
+  EB_ENV_API: ${{ secrets.EB_ENV_API }}
+  EB_ENV_WORKER: ${{ secrets.EB_ENV_WORKER }}
+  S3_BUCKET: ${{ secrets.S3_BUCKET_EB }}
 
 jobs:
   # ============================================================
@@ -109,7 +110,8 @@ jobs:
     needs: [ci, scan-source]
     outputs:
       image_tag: ${{ steps.meta.outputs.tag }}
-      image_uri: ${{ steps.meta.outputs.uri }}
+      app_image_uri: ${{ steps.meta.outputs.app_uri }}
+      worker_image_uri: ${{ steps.meta.outputs.worker_uri }}
 
     steps:
       - uses: actions/checkout@v4
@@ -134,25 +136,34 @@ jobs:
           else
             TAG="manual-$(git rev-parse --short HEAD)"
           fi
-          URI=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}
+          BASE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
-          echo "uri=${URI}:${TAG}" >> $GITHUB_OUTPUT
+          echo "app_uri=${BASE}/${{ env.ECR_REPOSITORY_APP }}:${TAG}" >> $GITHUB_OUTPUT
+          echo "worker_uri=${BASE}/${{ env.ECR_REPOSITORY_WORKER }}:${TAG}" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push image
+      - name: Build and push API image
         uses: docker/build-push-action@v6
         with:
           context: yehub-be
           file: yehub-be/Dockerfile
           push: true
           tags: |
-            ${{ steps.meta.outputs.uri }}
-            ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+            ${{ steps.meta.outputs.app_uri }}
+            ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_APP }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64    # native on ubuntu-latest — 4x faster than ARM64/QEMU emulation
+          platforms: linux/amd64
+
+      - name: Tag and push Worker image (same Dockerfile, different ECR repo)
+        run: |
+          docker pull ${{ steps.meta.outputs.app_uri }}
+          docker tag ${{ steps.meta.outputs.app_uri }} ${{ steps.meta.outputs.worker_uri }}
+          docker tag ${{ steps.meta.outputs.app_uri }} ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_WORKER }}:latest
+          docker push ${{ steps.meta.outputs.worker_uri }}
+          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_WORKER }}:latest
 
   # ============================================================
   # Job 4: Scan Docker image with Trivy
@@ -179,7 +190,7 @@ jobs:
       - name: Run Trivy vulnerability scanner (image)
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ needs.build-push.outputs.image_uri }}
+          image-ref: ${{ needs.build-push.outputs.app_image_uri }}
           format: sarif
           output: trivy-image-results.sarif
           severity: CRITICAL,HIGH
@@ -216,7 +227,7 @@ jobs:
           {
             "AWSEBDockerrunVersion": "1",
             "Image": {
-              "Name": "${{ needs.build-push.outputs.image_uri }}",
+              "Name": "${{ needs.build-push.outputs.app_image_uri }}",
               "Update": "true"
             },
             "Ports": [{ "ContainerPort": 3000, "HostPort": 3000 }],
@@ -234,7 +245,6 @@ jobs:
       - name: Package with ebextensions and upload to S3
         run: |
           TAG=${{ needs.build-push.outputs.image_tag }}
-          # Copy .ebextensions into deploy package so Beanstalk runs secret injection
           cp -r yehub-be/.ebextensions .ebextensions
           zip -r api-${TAG}.zip Dockerrun.aws.json .ebextensions/
           aws s3 cp api-${TAG}.zip s3://${{ env.S3_BUCKET }}/deployments/api-${TAG}.zip
@@ -288,7 +298,7 @@ jobs:
           {
             "AWSEBDockerrunVersion": "1",
             "Image": {
-              "Name": "${{ needs.build-push.outputs.image_uri }}",
+              "Name": "${{ needs.build-push.outputs.worker_image_uri }}",
               "Update": "true"
             },
             "Ports": [{ "ContainerPort": 3001, "HostPort": 3001 }],
@@ -304,9 +314,7 @@ jobs:
       - name: Package worker with ebextensions and upload to S3
         run: |
           TAG=${{ needs.build-push.outputs.image_tag }}
-          # Use worker-specific ebextensions (worker-sm secret)
-          mkdir -p .ebextensions
-          cp yehub-be/.ebextensions/1load-env-worker.config .ebextensions/1load-env.config
+          cp -r yehub-be/.ebextensions .ebextensions
           zip -r worker-${TAG}.zip Dockerrun.aws.json .ebextensions/
           aws s3 cp worker-${TAG}.zip s3://${{ env.S3_BUCKET }}/deployments/worker-${TAG}.zip
 
