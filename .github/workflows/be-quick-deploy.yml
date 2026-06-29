@@ -135,11 +135,22 @@ jobs:
       - name: Create Beanstalk app version
         run: |
           TAG=${{ needs.build-push.outputs.image_tag }}
-          aws elasticbeanstalk create-application-version \
+          # Check if version already exists, skip creation if so
+          EXISTING=$(aws elasticbeanstalk describe-application-versions \
             --application-name ${{ env.EB_APPLICATION }} \
-            --version-label api-${TAG} \
-            --source-bundle S3Bucket="${{ env.S3_BUCKET }}",S3Key="deployments/api-${TAG}.zip" \
-            --region ${{ env.AWS_REGION }}
+            --version-labels "api-${TAG}" \
+            --query "ApplicationVersions[0].VersionLabel" \
+            --output text --region ${{ env.AWS_REGION }} 2>/dev/null || echo "None")
+
+          if [ "$EXISTING" = "None" ] || [ -z "$EXISTING" ]; then
+            aws elasticbeanstalk create-application-version \
+              --application-name ${{ env.EB_APPLICATION }} \
+              --version-label api-${TAG} \
+              --source-bundle S3Bucket="${{ env.S3_BUCKET }}",S3Key="deployments/api-${TAG}.zip" \
+              --region ${{ env.AWS_REGION }}
+          else
+            echo "Version api-${TAG} already exists, skipping creation."
+          fi
 
       - name: Deploy to Beanstalk
         run: |
@@ -202,11 +213,21 @@ jobs:
       - name: Create Beanstalk app version
         run: |
           TAG=${{ needs.build-push.outputs.image_tag }}
-          aws elasticbeanstalk create-application-version \
+          EXISTING=$(aws elasticbeanstalk describe-application-versions \
             --application-name ${{ env.EB_APPLICATION }} \
-            --version-label worker-${TAG} \
-            --source-bundle S3Bucket="${{ env.S3_BUCKET }}",S3Key="deployments/worker-${TAG}.zip" \
-            --region ${{ env.AWS_REGION }}
+            --version-labels "worker-${TAG}" \
+            --query "ApplicationVersions[0].VersionLabel" \
+            --output text --region ${{ env.AWS_REGION }} 2>/dev/null || echo "None")
+
+          if [ "$EXISTING" = "None" ] || [ -z "$EXISTING" ]; then
+            aws elasticbeanstalk create-application-version \
+              --application-name ${{ env.EB_APPLICATION }} \
+              --version-label worker-${TAG} \
+              --source-bundle S3Bucket="${{ env.S3_BUCKET }}",S3Key="deployments/worker-${TAG}.zip" \
+              --region ${{ env.AWS_REGION }}
+          else
+            echo "Version worker-${TAG} already exists, skipping creation."
+          fi
 
       - name: Deploy to Beanstalk
         run: |
