@@ -1,0 +1,1455 @@
+﻿2026-06-29T18:32:33.9850385Z Current runner version: '2.335.1'
+2026-06-29T18:32:33.9877070Z ##[group]Runner Image Provisioner
+2026-06-29T18:32:33.9878163Z Hosted Compute Agent
+2026-06-29T18:32:33.9879008Z Version: 20260611.554
+2026-06-29T18:32:33.9879770Z Commit: 5e0782fdc9014723d3be820dd114dd31555c2bd1
+2026-06-29T18:32:33.9880718Z Build Date: 2026-06-11T21:40:46Z
+2026-06-29T18:32:33.9881560Z Worker ID: {146d6fed-6a8f-4843-884a-bd47bfddcd60}
+2026-06-29T18:32:33.9882524Z Azure Region: eastus
+2026-06-29T18:32:33.9883213Z ##[endgroup]
+2026-06-29T18:32:33.9885224Z ##[group]Operating System
+2026-06-29T18:32:33.9886031Z Ubuntu
+2026-06-29T18:32:33.9886669Z 24.04.4
+2026-06-29T18:32:33.9887812Z LTS
+2026-06-29T18:32:33.9888479Z ##[endgroup]
+2026-06-29T18:32:33.9889287Z ##[group]Runner Image
+2026-06-29T18:32:33.9890043Z Image: ubuntu-24.04
+2026-06-29T18:32:33.9890824Z Version: 20260622.220.1
+2026-06-29T18:32:33.9892655Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260622.220/images/ubuntu/Ubuntu2404-Readme.md
+2026-06-29T18:32:33.9894380Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260622.220
+2026-06-29T18:32:33.9895546Z ##[endgroup]
+2026-06-29T18:32:33.9897068Z ##[group]GITHUB_TOKEN Permissions
+2026-06-29T18:32:33.9899502Z Contents: read
+2026-06-29T18:32:33.9900320Z Metadata: read
+2026-06-29T18:32:33.9901105Z Packages: read
+2026-06-29T18:32:33.9901801Z ##[endgroup]
+2026-06-29T18:32:33.9904402Z Secret source: Actions
+2026-06-29T18:32:33.9905598Z Prepare workflow directory
+2026-06-29T18:32:34.0413234Z Prepare all required actions
+2026-06-29T18:32:34.0450140Z Getting action download info
+2026-06-29T18:32:34.3067782Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-06-29T18:32:34.3727703Z Download action repository 'aws-actions/configure-aws-credentials@v4' (SHA:7474bc4690e29a8392af63c5b98e7449536d5c3a)
+2026-06-29T18:32:34.5159631Z Download action repository 'aws-actions/amazon-ecr-login@v2' (SHA:d539f0932e70871a027e9d5a9d8fc38589180a64)
+2026-06-29T18:32:34.6409791Z Download action repository 'docker/setup-buildx-action@v3' (SHA:8d2750c68a42422c14e847fe6c8ac0403b4cbd6f)
+2026-06-29T18:32:34.8471043Z Download action repository 'docker/build-push-action@v6' (SHA:10e90e3645eae34f1e60eeb005ba3a3d33f178e8)
+2026-06-29T18:32:35.1633357Z Complete job name: Build & Push to ECR
+2026-06-29T18:32:35.2336415Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T18:32:35.2345261Z ##[group]Run actions/checkout@v4
+2026-06-29T18:32:35.2346097Z with:
+2026-06-29T18:32:35.2346927Z   repository: ssangnd/yehub-platform-clone-for-testing
+2026-06-29T18:32:35.2352124Z   token: ***
+2026-06-29T18:32:35.2352686Z   ssh-strict: true
+2026-06-29T18:32:35.2353245Z   ssh-user: git
+2026-06-29T18:32:35.2353838Z   persist-credentials: true
+2026-06-29T18:32:35.2354447Z   clean: true
+2026-06-29T18:32:35.2355009Z   sparse-checkout-cone-mode: true
+2026-06-29T18:32:35.2355649Z   fetch-depth: 1
+2026-06-29T18:32:35.2356192Z   fetch-tags: false
+2026-06-29T18:32:35.2356863Z   show-progress: true
+2026-06-29T18:32:35.2357442Z   lfs: false
+2026-06-29T18:32:35.2358031Z   submodules: false
+2026-06-29T18:32:35.2358596Z   set-safe-directory: true
+2026-06-29T18:32:35.2359425Z env:
+2026-06-29T18:32:35.2360008Z   AWS_REGION: ***
+2026-06-29T18:32:35.2429844Z   AWS_ACCOUNT_ID: ***
+2026-06-29T18:32:35.2430664Z   ECR_REPOSITORY_APP: ***
+2026-06-29T18:32:35.2431436Z   ECR_REPOSITORY_WORKER: ***
+2026-06-29T18:32:35.2432200Z   EB_APPLICATION: ***
+2026-06-29T18:32:35.2432888Z   EB_ENV_API: ***
+2026-06-29T18:32:35.2433498Z   EB_ENV_WORKER: ***
+2026-06-29T18:32:35.2434222Z   S3_BUCKET: ***
+2026-06-29T18:32:35.2434770Z ##[endgroup]
+2026-06-29T18:32:35.3438998Z Syncing repository: ssangnd/yehub-platform-clone-for-testing
+2026-06-29T18:32:35.3441592Z ##[group]Getting Git version info
+2026-06-29T18:32:35.3442796Z Working directory is '/home/runner/work/yehub-platform-clone-for-testing/yehub-platform-clone-for-testing'
+2026-06-29T18:32:35.3444380Z [command]/usr/bin/git version
+2026-06-29T18:32:35.3469616Z git version 2.54.0
+2026-06-29T18:32:35.3487970Z ##[endgroup]
+2026-06-29T18:32:35.3501374Z Temporarily overriding HOME='/home/runner/work/_temp/bb011f5a-bf5c-4bfa-84a2-3aa329ae1a28' before making global git config changes
+2026-06-29T18:32:35.3503132Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-29T18:32:35.3507176Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/yehub-platform-clone-for-testing/yehub-platform-clone-for-testing
+2026-06-29T18:32:35.3548498Z Deleting the contents of '/home/runner/work/yehub-platform-clone-for-testing/yehub-platform-clone-for-testing'
+2026-06-29T18:32:35.3552194Z ##[group]Initializing the repository
+2026-06-29T18:32:35.3556039Z [command]/usr/bin/git init /home/runner/work/yehub-platform-clone-for-testing/yehub-platform-clone-for-testing
+2026-06-29T18:32:35.3630452Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-06-29T18:32:35.3632456Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-06-29T18:32:35.3634332Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-06-29T18:32:35.3635852Z hint: call:
+2026-06-29T18:32:35.3636656Z hint:
+2026-06-29T18:32:35.3637857Z hint: 	git config --global init.defaultBranch <name>
+2026-06-29T18:32:35.3638625Z hint:
+2026-06-29T18:32:35.3639336Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-06-29T18:32:35.3640421Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-06-29T18:32:35.3641305Z hint:
+2026-06-29T18:32:35.3642015Z hint: 	git branch -m <name>
+2026-06-29T18:32:35.3642797Z hint:
+2026-06-29T18:32:35.3643566Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-06-29T18:32:35.3645681Z Initialized empty Git repository in /home/runner/work/yehub-platform-clone-for-testing/yehub-platform-clone-for-testing/.git/
+2026-06-29T18:32:35.3648344Z [command]/usr/bin/git remote add origin https://github.com/ssangnd/yehub-platform-clone-for-testing
+2026-06-29T18:32:35.3682702Z ##[endgroup]
+2026-06-29T18:32:35.3683705Z ##[group]Disabling automatic garbage collection
+2026-06-29T18:32:35.3686050Z [command]/usr/bin/git config --local gc.auto 0
+2026-06-29T18:32:35.3715640Z ##[endgroup]
+2026-06-29T18:32:35.3716550Z ##[group]Setting up auth
+2026-06-29T18:32:35.3721838Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-06-29T18:32:35.3754583Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-06-29T18:32:35.4056078Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-29T18:32:35.4087444Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-06-29T18:32:35.4314580Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-29T18:32:35.4345885Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-06-29T18:32:35.4578183Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-06-29T18:32:35.4612673Z ##[endgroup]
+2026-06-29T18:32:35.4614151Z ##[group]Fetching the repository
+2026-06-29T18:32:35.4621222Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +aa10dc5912622668d4d4b49845aef092c4dbb18d:refs/tags/v1.0.11
+2026-06-29T18:32:35.7161592Z From https://github.com/ssangnd/yehub-platform-clone-for-testing
+2026-06-29T18:32:35.7190997Z  * [new ref]         aa10dc5912622668d4d4b49845aef092c4dbb18d -> v1.0.11
+2026-06-29T18:32:35.7193874Z ##[endgroup]
+2026-06-29T18:32:35.7195247Z ##[group]Determining the checkout info
+2026-06-29T18:32:35.7196676Z ##[endgroup]
+2026-06-29T18:32:35.7201878Z [command]/usr/bin/git sparse-checkout disable
+2026-06-29T18:32:35.7246536Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-06-29T18:32:35.7274795Z ##[group]Checking out the ref
+2026-06-29T18:32:35.7279115Z [command]/usr/bin/git checkout --progress --force refs/tags/v1.0.11
+2026-06-29T18:32:35.7968400Z Note: switching to 'refs/tags/v1.0.11'.
+2026-06-29T18:32:35.7969170Z 
+2026-06-29T18:32:35.7969836Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-06-29T18:32:35.7971344Z changes and commit them, and you can discard any commits you make in this
+2026-06-29T18:32:35.7972759Z state without impacting any branches by switching back to a branch.
+2026-06-29T18:32:35.7973389Z 
+2026-06-29T18:32:35.7973785Z If you want to create a new branch to retain commits you create, you may
+2026-06-29T18:32:35.7974705Z do so (now or later) by using -c with the switch command. Example:
+2026-06-29T18:32:35.7975235Z 
+2026-06-29T18:32:35.7975664Z   git switch -c <new-branch-name>
+2026-06-29T18:32:35.7976247Z 
+2026-06-29T18:32:35.7976617Z Or undo this operation with:
+2026-06-29T18:32:35.7977269Z 
+2026-06-29T18:32:35.7977496Z   git switch -
+2026-06-29T18:32:35.7977802Z 
+2026-06-29T18:32:35.7978237Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-06-29T18:32:35.7978827Z 
+2026-06-29T18:32:35.7979131Z HEAD is now at aa10dc5 fix: clean ebextensions script
+2026-06-29T18:32:35.7981088Z ##[endgroup]
+2026-06-29T18:32:35.8028301Z [command]/usr/bin/git log -1 --format=%H
+2026-06-29T18:32:35.8051668Z aa10dc5912622668d4d4b49845aef092c4dbb18d
+2026-06-29T18:32:35.8322464Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T18:32:35.8325466Z ##[group]Run aws-actions/configure-aws-credentials@v4
+2026-06-29T18:32:35.8326132Z with:
+2026-06-29T18:32:35.8327039Z   aws-access-key-id: ***
+2026-06-29T18:32:35.8327798Z   aws-secret-access-key: ***
+2026-06-29T18:32:35.8328401Z   aws-region: ***
+2026-06-29T18:32:35.8328918Z   audience: sts.amazonaws.com
+2026-06-29T18:32:35.8329486Z   output-env-credentials: true
+2026-06-29T18:32:35.8330018Z env:
+2026-06-29T18:32:35.8330510Z   AWS_REGION: ***
+2026-06-29T18:32:35.8331024Z   AWS_ACCOUNT_ID: ***
+2026-06-29T18:32:35.8331570Z   ECR_REPOSITORY_APP: ***
+2026-06-29T18:32:35.8332147Z   ECR_REPOSITORY_WORKER: ***
+2026-06-29T18:32:35.8332792Z   EB_APPLICATION: ***
+2026-06-29T18:32:35.8333377Z   EB_ENV_API: ***
+2026-06-29T18:32:35.8333920Z   EB_ENV_WORKER: ***
+2026-06-29T18:32:35.8334587Z   S3_BUCKET: ***
+2026-06-29T18:32:35.8335070Z ##[endgroup]
+2026-06-29T18:32:36.7203935Z Proceeding with IAM user credentials
+2026-06-29T18:32:36.7423847Z ##[group]Run aws-actions/amazon-ecr-login@v2
+2026-06-29T18:32:36.7425454Z with:
+2026-06-29T18:32:36.7426637Z   mask-password: true
+2026-06-29T18:32:36.7428235Z   registry-type: private
+2026-06-29T18:32:36.7429576Z   skip-logout: false
+2026-06-29T18:32:36.7430803Z env:
+2026-06-29T18:32:36.7432271Z   AWS_REGION: ***
+2026-06-29T18:32:36.7433583Z   AWS_ACCOUNT_ID: ***
+2026-06-29T18:32:36.7434937Z   ECR_REPOSITORY_APP: ***
+2026-06-29T18:32:36.7436392Z   ECR_REPOSITORY_WORKER: ***
+2026-06-29T18:32:36.7438052Z   EB_APPLICATION: ***
+2026-06-29T18:32:36.7439437Z   EB_ENV_API: ***
+2026-06-29T18:32:36.7440760Z   EB_ENV_WORKER: ***
+2026-06-29T18:32:36.7442304Z   S3_BUCKET: ***
+2026-06-29T18:32:36.7443555Z   AWS_DEFAULT_REGION: ***
+2026-06-29T18:32:36.7444948Z   AWS_ACCESS_KEY_ID: ***
+2026-06-29T18:32:36.7447077Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-29T18:32:36.7448360Z ##[endgroup]
+2026-06-29T18:32:36.8451798Z Using environment variable credentials.
+2026-06-29T18:32:37.8206365Z Logging into registry ***.dkr.ecr.***.amazonaws.com
+2026-06-29T18:32:39.9898351Z ##[group]Run TAG="test-$(git rev-parse --short HEAD)-$(date +%s)"
+2026-06-29T18:32:39.9898952Z [36;1mTAG="test-$(git rev-parse --short HEAD)-$(date +%s)"[0m
+2026-06-29T18:32:39.9899562Z [36;1mBASE=***.dkr.ecr.***.amazonaws.com[0m
+2026-06-29T18:32:39.9899938Z [36;1mecho "tag=${TAG}" >> $GITHUB_OUTPUT[0m
+2026-06-29T18:32:39.9900383Z [36;1mecho "app_uri=${BASE}/***:${TAG}" >> $GITHUB_OUTPUT[0m
+2026-06-29T18:32:39.9900882Z [36;1mecho "worker_uri=${BASE}/***:${TAG}" >> $GITHUB_OUTPUT[0m
+2026-06-29T18:32:40.0036456Z shell: /usr/bin/bash -e {0}
+2026-06-29T18:32:40.0037092Z env:
+2026-06-29T18:32:40.0037416Z   AWS_REGION: ***
+2026-06-29T18:32:40.0037706Z   AWS_ACCOUNT_ID: ***
+2026-06-29T18:32:40.0037999Z   ECR_REPOSITORY_APP: ***
+2026-06-29T18:32:40.0038325Z   ECR_REPOSITORY_WORKER: ***
+2026-06-29T18:32:40.0038653Z   EB_APPLICATION: ***
+2026-06-29T18:32:40.0038962Z   EB_ENV_API: ***
+2026-06-29T18:32:40.0039261Z   EB_ENV_WORKER: ***
+2026-06-29T18:32:40.0039646Z   S3_BUCKET: ***
+2026-06-29T18:32:40.0039956Z   AWS_DEFAULT_REGION: ***
+2026-06-29T18:32:40.0040260Z   AWS_ACCESS_KEY_ID: ***
+2026-06-29T18:32:40.0040627Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-29T18:32:40.0040902Z ##[endgroup]
+2026-06-29T18:32:40.0279373Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T18:32:40.0280640Z ##[group]Run docker/setup-buildx-action@v3
+2026-06-29T18:32:40.0280963Z with:
+2026-06-29T18:32:40.0281215Z   driver: docker-container
+2026-06-29T18:32:40.0281508Z   use: true
+2026-06-29T18:32:40.0281755Z   keep-state: false
+2026-06-29T18:32:40.0282036Z   cache-binary: true
+2026-06-29T18:32:40.0282297Z   cleanup: true
+2026-06-29T18:32:40.0282566Z   install: false
+2026-06-29T18:32:40.0282832Z env:
+2026-06-29T18:32:40.0283124Z   AWS_REGION: ***
+2026-06-29T18:32:40.0283400Z   AWS_ACCOUNT_ID: ***
+2026-06-29T18:32:40.0283698Z   ECR_REPOSITORY_APP: ***
+2026-06-29T18:32:40.0283997Z   ECR_REPOSITORY_WORKER: ***
+2026-06-29T18:32:40.0284347Z   EB_APPLICATION: ***
+2026-06-29T18:32:40.0284675Z   EB_ENV_API: ***
+2026-06-29T18:32:40.0284972Z   EB_ENV_WORKER: ***
+2026-06-29T18:32:40.0285313Z   S3_BUCKET: ***
+2026-06-29T18:32:40.0285583Z   AWS_DEFAULT_REGION: ***
+2026-06-29T18:32:40.0285882Z   AWS_ACCESS_KEY_ID: ***
+2026-06-29T18:32:40.0286244Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-29T18:32:40.0286522Z ##[endgroup]
+2026-06-29T18:32:40.2858360Z (node:2320) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-29T18:32:40.2859511Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-29T18:32:40.2903105Z ##[group]Docker info
+2026-06-29T18:32:40.2923573Z [command]/usr/bin/docker version
+2026-06-29T18:32:40.3127872Z Client: Docker Engine - Community
+2026-06-29T18:32:40.3130229Z  Version:           28.0.4
+2026-06-29T18:32:40.3130646Z  API version:       1.48
+2026-06-29T18:32:40.3131105Z  Go version:        go1.23.7
+2026-06-29T18:32:40.3132018Z  Git commit:        b8034c0
+2026-06-29T18:32:40.3132496Z  Built:             Tue Mar 25 15:07:16 2025
+2026-06-29T18:32:40.3132828Z  OS/Arch:           linux/amd64
+2026-06-29T18:32:40.3133135Z  Context:           default
+2026-06-29T18:32:40.3133310Z 
+2026-06-29T18:32:40.3133444Z Server: Docker Engine - Community
+2026-06-29T18:32:40.3133729Z  Engine:
+2026-06-29T18:32:40.3133960Z   Version:          28.0.4
+2026-06-29T18:32:40.3134273Z   API version:      1.48 (minimum version 1.24)
+2026-06-29T18:32:40.3134613Z   Go version:       go1.23.7
+2026-06-29T18:32:40.3134891Z   Git commit:       6430e49
+2026-06-29T18:32:40.3135567Z   Built:            Tue Mar 25 15:07:16 2025
+2026-06-29T18:32:40.3135895Z   OS/Arch:          linux/amd64
+2026-06-29T18:32:40.3136188Z   Experimental:     false
+2026-06-29T18:32:40.3136485Z  containerd:
+2026-06-29T18:32:40.3136729Z   Version:          v2.2.5
+2026-06-29T18:32:40.3137297Z   GitCommit:        e53c7c1516c3b2bff98eb76f1f4117477e6f4e66
+2026-06-29T18:32:40.3137648Z  runc:
+2026-06-29T18:32:40.3137890Z   Version:          1.3.6
+2026-06-29T18:32:40.3138168Z   GitCommit:        v1.3.6-0-g491b69ba
+2026-06-29T18:32:40.3138490Z  docker-init:
+2026-06-29T18:32:40.3138775Z   Version:          0.19.0
+2026-06-29T18:32:40.3139048Z   GitCommit:        de40ad0
+2026-06-29T18:32:40.3172757Z [command]/usr/bin/docker info
+2026-06-29T18:32:40.4732395Z Client: Docker Engine - Community
+2026-06-29T18:32:40.4733387Z  Version:    28.0.4
+2026-06-29T18:32:40.4734092Z  Context:    default
+2026-06-29T18:32:40.4734613Z  Debug Mode: false
+2026-06-29T18:32:40.4735013Z  Plugins:
+2026-06-29T18:32:40.4735402Z   buildx: Docker Buildx (Docker Inc.)
+2026-06-29T18:32:40.4735933Z     Version:  v0.35.0
+2026-06-29T18:32:40.4736456Z     Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+2026-06-29T18:32:40.4737311Z   compose: Docker Compose (Docker Inc.)
+2026-06-29T18:32:40.4737812Z     Version:  v2.38.2
+2026-06-29T18:32:40.4738331Z     Path:     /usr/libexec/docker/cli-plugins/docker-compose
+2026-06-29T18:32:40.4738756Z 
+2026-06-29T18:32:40.4739355Z Server:
+2026-06-29T18:32:40.4739729Z  Containers: 0
+2026-06-29T18:32:40.4755793Z   Running: 0
+2026-06-29T18:32:40.4756173Z   Paused: 0
+2026-06-29T18:32:40.4756532Z   Stopped: 0
+2026-06-29T18:32:40.4757079Z  Images: 6
+2026-06-29T18:32:40.4757452Z  Server Version: 28.0.4
+2026-06-29T18:32:40.4757888Z  Storage Driver: overlay2
+2026-06-29T18:32:40.4758328Z   Backing Filesystem: extfs
+2026-06-29T18:32:40.4758772Z   Supports d_type: true
+2026-06-29T18:32:40.4759180Z   Using metacopy: false
+2026-06-29T18:32:40.4759590Z   Native Overlay Diff: false
+2026-06-29T18:32:40.4760042Z   userxattr: false
+2026-06-29T18:32:40.4760465Z  Logging Driver: json-file
+2026-06-29T18:32:40.4760910Z  Cgroup Driver: systemd
+2026-06-29T18:32:40.4761311Z  Cgroup Version: 2
+2026-06-29T18:32:40.4761683Z  Plugins:
+2026-06-29T18:32:40.4762082Z   Volume: local
+2026-06-29T18:32:40.4762541Z   Network: bridge host ipvlan macvlan null overlay
+2026-06-29T18:32:40.4763269Z   Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+2026-06-29T18:32:40.4763941Z  Swarm: inactive
+2026-06-29T18:32:40.4764368Z  Runtimes: io.containerd.runc.v2 runc
+2026-06-29T18:32:40.4764872Z  Default Runtime: runc
+2026-06-29T18:32:40.4765284Z  Init Binary: docker-init
+2026-06-29T18:32:40.4765859Z  containerd version: e53c7c1516c3b2bff98eb76f1f4117477e6f4e66
+2026-06-29T18:32:40.4766505Z  runc version: v1.3.6-0-g491b69ba
+2026-06-29T18:32:40.4767199Z  init version: de40ad0
+2026-06-29T18:32:40.4767608Z  Security Options:
+2026-06-29T18:32:40.4767994Z   apparmor
+2026-06-29T18:32:40.4768340Z   seccomp
+2026-06-29T18:32:40.4768692Z    Profile: builtin
+2026-06-29T18:32:40.4769072Z   cgroupns
+2026-06-29T18:32:40.4769447Z  Kernel Version: 6.17.0-1018-azure
+2026-06-29T18:32:40.4769947Z  Operating System: Ubuntu 24.04.4 LTS
+2026-06-29T18:32:40.4770429Z  OSType: linux
+2026-06-29T18:32:40.4770815Z  Architecture: x86_64
+2026-06-29T18:32:40.4771202Z  CPUs: 4
+2026-06-29T18:32:40.4771566Z  Total Memory: 15.61GiB
+2026-06-29T18:32:40.4771991Z  Name: runnervmmklqx
+2026-06-29T18:32:40.4772441Z  ID: f2d2c484-93e9-43a1-aea9-ebee539c4962
+2026-06-29T18:32:40.4772970Z  Docker Root Dir: /var/lib/docker
+2026-06-29T18:32:40.4773449Z  Debug Mode: false
+2026-06-29T18:32:40.4773861Z  Username: githubactions
+2026-06-29T18:32:40.4774301Z  Experimental: false
+2026-06-29T18:32:40.4774700Z  Insecure Registries:
+2026-06-29T18:32:40.4779525Z   ::1/128
+2026-06-29T18:32:40.4779849Z   127.0.0.0/8
+2026-06-29T18:32:40.4780125Z  Live Restore Enabled: false
+2026-06-29T18:32:40.4780333Z 
+2026-06-29T18:32:40.4781226Z ##[endgroup]
+2026-06-29T18:32:40.5365184Z ##[group]Buildx version
+2026-06-29T18:32:40.5386937Z [command]/usr/bin/docker buildx version
+2026-06-29T18:32:40.5894000Z github.com/docker/buildx v0.35.0 a319e5b15052cf6557ceb666eb8ff6e32380b782
+2026-06-29T18:32:40.5923605Z ##[endgroup]
+2026-06-29T18:32:40.6097670Z ##[group]Inspecting default docker context
+2026-06-29T18:32:40.6253102Z [
+2026-06-29T18:32:40.6253589Z   {
+2026-06-29T18:32:40.6253926Z     "Name": "default",
+2026-06-29T18:32:40.6254408Z     "Metadata": {},
+2026-06-29T18:32:40.6254799Z     "Endpoints": {
+2026-06-29T18:32:40.6255159Z       "docker": {
+2026-06-29T18:32:40.6255572Z         "Host": "unix:///var/run/docker.sock",
+2026-06-29T18:32:40.6256119Z         "SkipTLSVerify": false
+2026-06-29T18:32:40.6256532Z       }
+2026-06-29T18:32:40.6257067Z     },
+2026-06-29T18:32:40.6257422Z     "TLSMaterial": {},
+2026-06-29T18:32:40.6257831Z     "Storage": {
+2026-06-29T18:32:40.6258240Z       "MetadataPath": "<IN MEMORY>",
+2026-06-29T18:32:40.6258739Z       "TLSPath": "<IN MEMORY>"
+2026-06-29T18:32:40.6259158Z     }
+2026-06-29T18:32:40.6259592Z   }
+2026-06-29T18:32:40.6259917Z ]
+2026-06-29T18:32:40.6260687Z ##[endgroup]
+2026-06-29T18:32:40.6261406Z ##[group]Creating a new builder instance
+2026-06-29T18:32:40.7531832Z [command]/usr/bin/docker buildx create --name builder-7925546f-cb0e-455b-8bc2-3849f65afb20 --driver docker-container --buildkitd-flags --allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host --use
+2026-06-29T18:32:40.8136721Z builder-7925546f-cb0e-455b-8bc2-3849f65afb20
+2026-06-29T18:32:40.8176044Z ##[endgroup]
+2026-06-29T18:32:40.8177297Z ##[group]Booting builder
+2026-06-29T18:32:40.8209766Z [command]/usr/bin/docker buildx inspect --bootstrap --builder builder-7925546f-cb0e-455b-8bc2-3849f65afb20
+2026-06-29T18:32:40.8735516Z #1 [internal] booting buildkit
+2026-06-29T18:32:41.0245083Z #1 pulling image moby/buildkit:buildx-stable-1
+2026-06-29T18:32:43.6791574Z #1 pulling image moby/buildkit:buildx-stable-1 2.8s done
+2026-06-29T18:32:43.8293686Z #1 creating container buildx_buildkit_builder-7925546f-cb0e-455b-8bc2-3849f65afb200
+2026-06-29T18:32:43.8930831Z #1 creating container buildx_buildkit_builder-7925546f-cb0e-455b-8bc2-3849f65afb200 0.2s done
+2026-06-29T18:32:43.8952184Z #1 DONE 3.0s
+2026-06-29T18:32:43.9282562Z Name:          builder-7925546f-cb0e-455b-8bc2-3849f65afb20
+2026-06-29T18:32:43.9283342Z Driver:        docker-container
+2026-06-29T18:32:43.9283799Z Last Activity: 2026-06-29 18:32:40 +0000 UTC
+2026-06-29T18:32:43.9284047Z 
+2026-06-29T18:32:43.9284146Z Nodes:
+2026-06-29T18:32:43.9284580Z Name:                  builder-7925546f-cb0e-455b-8bc2-3849f65afb200
+2026-06-29T18:32:43.9285110Z Endpoint:              unix:///var/run/docker.sock
+2026-06-29T18:32:43.9285744Z Status:                running
+2026-06-29T18:32:43.9289271Z BuildKit daemon flags: --allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host
+2026-06-29T18:32:43.9290195Z BuildKit version:      v0.30.0
+2026-06-29T18:32:43.9290740Z Platforms:             linux/amd64, linux/amd64/v2, linux/amd64/v3, linux/386
+2026-06-29T18:32:43.9291300Z Labels:
+2026-06-29T18:32:43.9291787Z  org.mobyproject.buildkit.worker.executor:         oci
+2026-06-29T18:32:43.9292499Z  org.mobyproject.buildkit.worker.hostname:         a17ee92d2c2b
+2026-06-29T18:32:43.9293204Z  org.mobyproject.buildkit.worker.network:          host
+2026-06-29T18:32:43.9293916Z  org.mobyproject.buildkit.worker.oci.process-mode: sandbox
+2026-06-29T18:32:43.9294661Z  org.mobyproject.buildkit.worker.selinux.enabled:  false
+2026-06-29T18:32:43.9295456Z  org.mobyproject.buildkit.worker.snapshotter:      overlayfs
+2026-06-29T18:32:43.9296066Z GC Policy rule#0:
+2026-06-29T18:32:43.9296418Z  All:            false
+2026-06-29T18:32:43.9297234Z  Filters:        type==source.local,type==exec.cachemount,type==source.git.checkout
+2026-06-29T18:32:43.9297819Z  Keep Duration:  48h0m0s
+2026-06-29T18:32:43.9298240Z  Max Used Space: 488.3MiB
+2026-06-29T18:32:43.9298654Z GC Policy rule#1:
+2026-06-29T18:32:43.9299002Z  All:            false
+2026-06-29T18:32:43.9299345Z  Keep Duration:  1440h0m0s
+2026-06-29T18:32:43.9302510Z  Reserved Space: 9.313GiB
+2026-06-29T18:32:43.9302785Z  Max Used Space: 93.13GiB
+2026-06-29T18:32:43.9303037Z  Min Free Space: 27.01GiB
+2026-06-29T18:32:43.9303285Z GC Policy rule#2:
+2026-06-29T18:32:43.9303531Z  All:            false
+2026-06-29T18:32:43.9303778Z  Reserved Space: 9.313GiB
+2026-06-29T18:32:43.9304029Z  Max Used Space: 93.13GiB
+2026-06-29T18:32:43.9304288Z  Min Free Space: 27.01GiB
+2026-06-29T18:32:43.9304538Z GC Policy rule#3:
+2026-06-29T18:32:43.9304771Z  All:            true
+2026-06-29T18:32:43.9305013Z  Reserved Space: 9.313GiB
+2026-06-29T18:32:43.9305264Z  Max Used Space: 93.13GiB
+2026-06-29T18:32:43.9305521Z  Min Free Space: 27.01GiB
+2026-06-29T18:32:43.9329666Z ##[endgroup]
+2026-06-29T18:32:44.0197962Z ##[group]Inspect builder
+2026-06-29T18:32:44.0198599Z {
+2026-06-29T18:32:44.0198933Z   "nodes": [
+2026-06-29T18:32:44.0199257Z     {
+2026-06-29T18:32:44.0199694Z       "name": "builder-7925546f-cb0e-455b-8bc2-3849f65afb200",
+2026-06-29T18:32:44.0200166Z       "endpoint": "unix:///var/run/docker.sock",
+2026-06-29T18:32:44.0200512Z       "status": "running",
+2026-06-29T18:32:44.0201102Z       "buildkitd-flags": "--allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host",
+2026-06-29T18:32:44.0201699Z       "buildkit": "v0.30.0",
+2026-06-29T18:32:44.0202084Z       "platforms": "linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/386",
+2026-06-29T18:32:44.0202763Z       "features": {
+2026-06-29T18:32:44.0203128Z         "Automatically load images to the Docker Engine image store": true,
+2026-06-29T18:32:44.0203536Z         "Cache export": true,
+2026-06-29T18:32:44.0203823Z         "Direct push": true,
+2026-06-29T18:32:44.0204102Z         "Docker exporter": true,
+2026-06-29T18:32:44.0204399Z         "Multi-platform build": true,
+2026-06-29T18:32:44.0204692Z         "OCI exporter": true
+2026-06-29T18:32:44.0204944Z       },
+2026-06-29T18:32:44.0205164Z       "labels": {
+2026-06-29T18:32:44.0205495Z         "org.mobyproject.buildkit.worker.executor": "oci",
+2026-06-29T18:32:44.0205951Z         "org.mobyproject.buildkit.worker.hostname": "a17ee92d2c2b",
+2026-06-29T18:32:44.0206384Z         "org.mobyproject.buildkit.worker.network": "host",
+2026-06-29T18:32:44.0207048Z         "org.mobyproject.buildkit.worker.oci.process-mode": "sandbox",
+2026-06-29T18:32:44.0207544Z         "org.mobyproject.buildkit.worker.selinux.enabled": "false",
+2026-06-29T18:32:44.0208036Z         "org.mobyproject.buildkit.worker.snapshotter": "overlayfs"
+2026-06-29T18:32:44.0208429Z       },
+2026-06-29T18:32:44.0208658Z       "gcPolicy": [
+2026-06-29T18:32:44.0208920Z         {
+2026-06-29T18:32:44.0209146Z           "all": false,
+2026-06-29T18:32:44.0209399Z           "filter": [
+2026-06-29T18:32:44.0209663Z             "type==source.local",
+2026-06-29T18:32:44.0209982Z             "type==exec.cachemount",
+2026-06-29T18:32:44.0210288Z             "type==source.git.checkout"
+2026-06-29T18:32:44.0210577Z           ],
+2026-06-29T18:32:44.0210812Z           "keepDuration": "48h0m0s",
+2026-06-29T18:32:44.0211104Z           "maxUsedSpace": "488.3MiB"
+2026-06-29T18:32:44.0211393Z         },
+2026-06-29T18:32:44.0211659Z         {
+2026-06-29T18:32:44.0211902Z           "all": false,
+2026-06-29T18:32:44.0212181Z           "keepDuration": "1440h0m0s",
+2026-06-29T18:32:44.0212509Z           "reservedSpace": "9.313GiB",
+2026-06-29T18:32:44.0212812Z           "maxUsedSpace": "93.13GiB",
+2026-06-29T18:32:44.0213114Z           "minFreeSpace": "27.01GiB"
+2026-06-29T18:32:44.0213386Z         },
+2026-06-29T18:32:44.0213598Z         {
+2026-06-29T18:32:44.0213839Z           "all": false,
+2026-06-29T18:32:44.0214143Z           "reservedSpace": "9.313GiB",
+2026-06-29T18:32:44.0214472Z           "maxUsedSpace": "93.13GiB",
+2026-06-29T18:32:44.0214779Z           "minFreeSpace": "27.01GiB"
+2026-06-29T18:32:44.0215082Z         },
+2026-06-29T18:32:44.0215291Z         {
+2026-06-29T18:32:44.0215523Z           "all": true,
+2026-06-29T18:32:44.0215798Z           "reservedSpace": "9.313GiB",
+2026-06-29T18:32:44.0216274Z           "maxUsedSpace": "93.13GiB",
+2026-06-29T18:32:44.0216599Z           "minFreeSpace": "27.01GiB"
+2026-06-29T18:32:44.0217271Z         }
+2026-06-29T18:32:44.0217571Z       ]
+2026-06-29T18:32:44.0217926Z     }
+2026-06-29T18:32:44.0218254Z   ],
+2026-06-29T18:32:44.0218722Z   "name": "builder-7925546f-cb0e-455b-8bc2-3849f65afb20",
+2026-06-29T18:32:44.0219326Z   "driver": "docker-container",
+2026-06-29T18:32:44.0219824Z   "lastActivity": "2026-06-29T18:32:40.000Z"
+2026-06-29T18:32:44.0220283Z }
+2026-06-29T18:32:44.0220945Z ##[endgroup]
+2026-06-29T18:32:44.0221728Z ##[group]BuildKit version
+2026-06-29T18:32:44.0222222Z builder-7925546f-cb0e-455b-8bc2-3849f65afb200: v0.30.0
+2026-06-29T18:32:44.0222778Z ##[endgroup]
+2026-06-29T18:32:44.0389834Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T18:32:44.0405432Z ##[group]Run docker/build-push-action@v6
+2026-06-29T18:32:44.0405754Z with:
+2026-06-29T18:32:44.0405992Z   context: yehub-be
+2026-06-29T18:32:44.0406260Z   file: yehub-be/Dockerfile
+2026-06-29T18:32:44.0406530Z   push: true
+2026-06-29T18:32:44.0407669Z   tags: ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960
+***.dkr.ecr.***.amazonaws.com/***:latest
+
+2026-06-29T18:32:44.0408229Z   cache-from: type=gha
+2026-06-29T18:32:44.0408519Z   cache-to: type=gha,mode=max
+2026-06-29T18:32:44.0408827Z   platforms: linux/amd64
+2026-06-29T18:32:44.0409092Z   load: false
+2026-06-29T18:32:44.0409329Z   no-cache: false
+2026-06-29T18:32:44.0409618Z   pull: false
+2026-06-29T18:32:44.0412984Z   github-token: ***
+2026-06-29T18:32:44.0413246Z env:
+2026-06-29T18:32:44.0413518Z   AWS_REGION: ***
+2026-06-29T18:32:44.0413784Z   AWS_ACCOUNT_ID: ***
+2026-06-29T18:32:44.0414066Z   ECR_REPOSITORY_APP: ***
+2026-06-29T18:32:44.0414367Z   ECR_REPOSITORY_WORKER: ***
+2026-06-29T18:32:44.0414665Z   EB_APPLICATION: ***
+2026-06-29T18:32:44.0414948Z   EB_ENV_API: ***
+2026-06-29T18:32:44.0415212Z   EB_ENV_WORKER: ***
+2026-06-29T18:32:44.0415549Z   S3_BUCKET: ***
+2026-06-29T18:32:44.0415811Z   AWS_DEFAULT_REGION: ***
+2026-06-29T18:32:44.0416091Z   AWS_ACCESS_KEY_ID: ***
+2026-06-29T18:32:44.0416440Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-29T18:32:44.0416704Z ##[endgroup]
+2026-06-29T18:32:44.2842418Z (node:2798) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-29T18:32:44.2843204Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-29T18:32:44.2861033Z ##[group]GitHub Actions runtime token ACs
+2026-06-29T18:32:44.2868765Z refs/heads/refs/tags/v1.0.11: read/write
+2026-06-29T18:32:44.2869270Z refs/heads/main: read
+2026-06-29T18:32:44.2869997Z ##[endgroup]
+2026-06-29T18:32:44.2870597Z ##[group]Docker info
+2026-06-29T18:32:44.2905926Z [command]/usr/bin/docker version
+2026-06-29T18:32:44.3098537Z Client: Docker Engine - Community
+2026-06-29T18:32:44.3108315Z  Version:           28.0.4
+2026-06-29T18:32:44.3108821Z  API version:       1.48
+2026-06-29T18:32:44.3109115Z  Go version:        go1.23.7
+2026-06-29T18:32:44.3109408Z  Git commit:        b8034c0
+2026-06-29T18:32:44.3109760Z  Built:             Tue Mar 25 15:07:16 2025
+2026-06-29T18:32:44.3110247Z  OS/Arch:           linux/amd64
+2026-06-29T18:32:44.3110680Z  Context:           default
+2026-06-29T18:32:44.3110950Z 
+2026-06-29T18:32:44.3111147Z Server: Docker Engine - Community
+2026-06-29T18:32:44.3111472Z  Engine:
+2026-06-29T18:32:44.3111706Z   Version:          28.0.4
+2026-06-29T18:32:44.3112039Z   API version:      1.48 (minimum version 1.24)
+2026-06-29T18:32:44.3112371Z   Go version:       go1.23.7
+2026-06-29T18:32:44.3112642Z   Git commit:       6430e49
+2026-06-29T18:32:44.3112916Z   Built:            Tue Mar 25 15:07:16 2025
+2026-06-29T18:32:44.3113228Z   OS/Arch:          linux/amd64
+2026-06-29T18:32:44.3113825Z   Experimental:     false
+2026-06-29T18:32:44.3114083Z  containerd:
+2026-06-29T18:32:44.3114321Z   Version:          v2.2.5
+2026-06-29T18:32:44.3114662Z   GitCommit:        e53c7c1516c3b2bff98eb76f1f4117477e6f4e66
+2026-06-29T18:32:44.3115014Z  runc:
+2026-06-29T18:32:44.3115246Z   Version:          1.3.6
+2026-06-29T18:32:44.3115515Z   GitCommit:        v1.3.6-0-g491b69ba
+2026-06-29T18:32:44.3115825Z  docker-init:
+2026-06-29T18:32:44.3116068Z   Version:          0.19.0
+2026-06-29T18:32:44.3116336Z   GitCommit:        de40ad0
+2026-06-29T18:32:44.3144372Z [command]/usr/bin/docker info
+2026-06-29T18:32:44.3571790Z Client: Docker Engine - Community
+2026-06-29T18:32:44.3572405Z  Version:    28.0.4
+2026-06-29T18:32:44.3573203Z  Context:    default
+2026-06-29T18:32:44.3573524Z  Debug Mode: false
+2026-06-29T18:32:44.3573806Z  Plugins:
+2026-06-29T18:32:44.3577666Z   buildx: Docker Buildx (Docker Inc.)
+2026-06-29T18:32:44.3578156Z     Version:  v0.35.0
+2026-06-29T18:32:44.3578650Z     Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+2026-06-29T18:32:44.3579273Z   compose: Docker Compose (Docker Inc.)
+2026-06-29T18:32:44.3579740Z     Version:  v2.38.2
+2026-06-29T18:32:44.3580228Z     Path:     /usr/libexec/docker/cli-plugins/docker-compose
+2026-06-29T18:32:44.3580632Z 
+2026-06-29T18:32:44.3580770Z Server:
+2026-06-29T18:32:44.3581093Z  Containers: 1
+2026-06-29T18:32:44.3581459Z   Running: 1
+2026-06-29T18:32:44.3581688Z   Paused: 0
+2026-06-29T18:32:44.3581949Z   Stopped: 0
+2026-06-29T18:32:44.3582171Z  Images: 7
+2026-06-29T18:32:44.3582411Z  Server Version: 28.0.4
+2026-06-29T18:32:44.3582692Z  Storage Driver: overlay2
+2026-06-29T18:32:44.3582995Z   Backing Filesystem: extfs
+2026-06-29T18:32:44.3583275Z   Supports d_type: true
+2026-06-29T18:32:44.3583538Z   Using metacopy: false
+2026-06-29T18:32:44.3583806Z   Native Overlay Diff: false
+2026-06-29T18:32:44.3584084Z   userxattr: false
+2026-06-29T18:32:44.3584339Z  Logging Driver: json-file
+2026-06-29T18:32:44.3584732Z  Cgroup Driver: systemd
+2026-06-29T18:32:44.3585101Z  Cgroup Version: 2
+2026-06-29T18:32:44.3585485Z  Plugins:
+2026-06-29T18:32:44.3585827Z   Volume: local
+2026-06-29T18:32:44.3586239Z   Network: bridge host ipvlan macvlan null overlay
+2026-06-29T18:32:44.3587173Z   Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+2026-06-29T18:32:44.3587844Z  Swarm: inactive
+2026-06-29T18:32:44.3588250Z  Runtimes: io.containerd.runc.v2 runc
+2026-06-29T18:32:44.3588715Z  Default Runtime: runc
+2026-06-29T18:32:44.3589088Z  Init Binary: docker-init
+2026-06-29T18:32:44.3589592Z  containerd version: e53c7c1516c3b2bff98eb76f1f4117477e6f4e66
+2026-06-29T18:32:44.3590188Z  runc version: v1.3.6-0-g491b69ba
+2026-06-29T18:32:44.3590602Z  init version: de40ad0
+2026-06-29T18:32:44.3590953Z  Security Options:
+2026-06-29T18:32:44.3591347Z   apparmor
+2026-06-29T18:32:44.3591647Z   seccomp
+2026-06-29T18:32:44.3591979Z    Profile: builtin
+2026-06-29T18:32:44.3592317Z   cgroupns
+2026-06-29T18:32:44.3592653Z  Kernel Version: 6.17.0-1018-azure
+2026-06-29T18:32:44.3593106Z  Operating System: Ubuntu 24.04.4 LTS
+2026-06-29T18:32:44.3593521Z  OSType: linux
+2026-06-29T18:32:44.3593889Z  Architecture: x86_64
+2026-06-29T18:32:44.3594263Z  CPUs: 4
+2026-06-29T18:32:44.3594595Z  Total Memory: 15.61GiB
+2026-06-29T18:32:44.3594984Z  Name: runnervmmklqx
+2026-06-29T18:32:44.3595400Z  ID: f2d2c484-93e9-43a1-aea9-ebee539c4962
+2026-06-29T18:32:44.3595903Z  Docker Root Dir: /var/lib/docker
+2026-06-29T18:32:44.3596352Z  Debug Mode: false
+2026-06-29T18:32:44.3596963Z  Username: githubactions
+2026-06-29T18:32:44.3597389Z  Experimental: false
+2026-06-29T18:32:44.3597771Z  Insecure Registries:
+2026-06-29T18:32:44.3598210Z   ::1/128
+2026-06-29T18:32:44.3598514Z   127.0.0.0/8
+2026-06-29T18:32:44.3598879Z  Live Restore Enabled: false
+2026-06-29T18:32:44.3599155Z 
+2026-06-29T18:32:44.3599795Z ##[endgroup]
+2026-06-29T18:32:44.3600437Z ##[group]Proxy configuration
+2026-06-29T18:32:44.3600842Z No proxy configuration found
+2026-06-29T18:32:44.3601494Z ##[endgroup]
+2026-06-29T18:32:44.4139071Z ##[group]Buildx version
+2026-06-29T18:32:44.4159737Z [command]/usr/bin/docker buildx version
+2026-06-29T18:32:44.4622039Z github.com/docker/buildx v0.35.0 a319e5b15052cf6557ceb666eb8ff6e32380b782
+2026-06-29T18:32:44.4655965Z ##[endgroup]
+2026-06-29T18:32:44.4656577Z ##[group]Builder info
+2026-06-29T18:32:44.5524634Z {
+2026-06-29T18:32:44.5525039Z   "nodes": [
+2026-06-29T18:32:44.5525420Z     {
+2026-06-29T18:32:44.5525806Z       "name": "builder-7925546f-cb0e-455b-8bc2-3849f65afb200",
+2026-06-29T18:32:44.5526352Z       "endpoint": "unix:///var/run/docker.sock",
+2026-06-29T18:32:44.5526697Z       "status": "running",
+2026-06-29T18:32:44.5528708Z       "buildkitd-flags": "--allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host",
+2026-06-29T18:32:44.5529330Z       "buildkit": "v0.30.0",
+2026-06-29T18:32:44.5529734Z       "platforms": "linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/386",
+2026-06-29T18:32:44.5530133Z       "features": {
+2026-06-29T18:32:44.5530487Z         "Automatically load images to the Docker Engine image store": true,
+2026-06-29T18:32:44.5530917Z         "Cache export": true,
+2026-06-29T18:32:44.5531206Z         "Direct push": true,
+2026-06-29T18:32:44.5531485Z         "Docker exporter": true,
+2026-06-29T18:32:44.5531782Z         "Multi-platform build": true,
+2026-06-29T18:32:44.5532080Z         "OCI exporter": true
+2026-06-29T18:32:44.5532340Z       },
+2026-06-29T18:32:44.5532563Z       "labels": {
+2026-06-29T18:32:44.5532882Z         "org.mobyproject.buildkit.worker.executor": "oci",
+2026-06-29T18:32:44.5533330Z         "org.mobyproject.buildkit.worker.hostname": "a17ee92d2c2b",
+2026-06-29T18:32:44.5533767Z         "org.mobyproject.buildkit.worker.network": "host",
+2026-06-29T18:32:44.5534222Z         "org.mobyproject.buildkit.worker.oci.process-mode": "sandbox",
+2026-06-29T18:32:44.5534714Z         "org.mobyproject.buildkit.worker.selinux.enabled": "false",
+2026-06-29T18:32:44.5535222Z         "org.mobyproject.buildkit.worker.snapshotter": "overlayfs"
+2026-06-29T18:32:44.5535607Z       },
+2026-06-29T18:32:44.5535828Z       "gcPolicy": [
+2026-06-29T18:32:44.5536069Z         {
+2026-06-29T18:32:44.5536295Z           "all": false,
+2026-06-29T18:32:44.5536547Z           "filter": [
+2026-06-29T18:32:44.5537091Z             "type==source.local",
+2026-06-29T18:32:44.5537551Z             "type==exec.cachemount",
+2026-06-29T18:32:44.5538030Z             "type==source.git.checkout"
+2026-06-29T18:32:44.5538468Z           ],
+2026-06-29T18:32:44.5538784Z           "keepDuration": "48h0m0s",
+2026-06-29T18:32:44.5539074Z           "maxUsedSpace": "488.3MiB"
+2026-06-29T18:32:44.5539341Z         },
+2026-06-29T18:32:44.5539552Z         {
+2026-06-29T18:32:44.5539782Z           "all": false,
+2026-06-29T18:32:44.5540052Z           "keepDuration": "1440h0m0s",
+2026-06-29T18:32:44.5540350Z           "reservedSpace": "9.313GiB",
+2026-06-29T18:32:44.5540633Z           "maxUsedSpace": "93.13GiB",
+2026-06-29T18:32:44.5540925Z           "minFreeSpace": "27.01GiB"
+2026-06-29T18:32:44.5541191Z         },
+2026-06-29T18:32:44.5541406Z         {
+2026-06-29T18:32:44.5541616Z           "all": false,
+2026-06-29T18:32:44.5541865Z           "reservedSpace": "9.313GiB",
+2026-06-29T18:32:44.5542149Z           "maxUsedSpace": "93.13GiB",
+2026-06-29T18:32:44.5542430Z           "minFreeSpace": "27.01GiB"
+2026-06-29T18:32:44.5542692Z         },
+2026-06-29T18:32:44.5542901Z         {
+2026-06-29T18:32:44.5543116Z           "all": true,
+2026-06-29T18:32:44.5543368Z           "reservedSpace": "9.313GiB",
+2026-06-29T18:32:44.5543652Z           "maxUsedSpace": "93.13GiB",
+2026-06-29T18:32:44.5543929Z           "minFreeSpace": "27.01GiB"
+2026-06-29T18:32:44.5544189Z         }
+2026-06-29T18:32:44.5544399Z       ]
+2026-06-29T18:32:44.5544610Z     }
+2026-06-29T18:32:44.5544815Z   ],
+2026-06-29T18:32:44.5545108Z   "name": "builder-7925546f-cb0e-455b-8bc2-3849f65afb20",
+2026-06-29T18:32:44.5545486Z   "driver": "docker-container",
+2026-06-29T18:32:44.5545825Z   "lastActivity": "2026-06-29T18:32:40.000Z"
+2026-06-29T18:32:44.5546144Z }
+2026-06-29T18:32:44.5547171Z ##[endgroup]
+2026-06-29T18:32:44.7043972Z [command]/usr/bin/docker buildx build --cache-from type=gha --cache-to type=gha,mode=max --file yehub-be/Dockerfile --iidfile /home/runner/work/_temp/docker-actions-toolkit-ST3Ggj/build-iidfile-be94242220.txt --platform linux/amd64 --attest type=provenance,mode=max,builder-id=https://github.com/ssangnd/yehub-platform-clone-for-testing/actions/runs/28394190050/attempts/1 --tag ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960 --tag ***.dkr.ecr.***.amazonaws.com/***:latest --metadata-file /home/runner/work/_temp/docker-actions-toolkit-ST3Ggj/build-metadata-daeaf1e043.json --push yehub-be
+2026-06-29T18:32:44.9901319Z #0 building with "builder-7925546f-cb0e-455b-8bc2-3849f65afb20" instance using docker-container driver
+2026-06-29T18:32:44.9901807Z 
+2026-06-29T18:32:44.9901968Z #1 [internal] load build definition from Dockerfile
+2026-06-29T18:32:44.9902346Z #1 transferring dockerfile: 1.40kB done
+2026-06-29T18:32:44.9902658Z #1 DONE 0.0s
+2026-06-29T18:32:44.9902807Z 
+2026-06-29T18:32:44.9902986Z #2 [auth] library/node:pull token for registry-1.docker.io
+2026-06-29T18:32:44.9903336Z #2 DONE 0.0s
+2026-06-29T18:32:44.9903462Z 
+2026-06-29T18:32:44.9903653Z #3 [internal] load metadata for docker.io/library/node:22-alpine
+2026-06-29T18:32:45.1773189Z #3 DONE 0.4s
+2026-06-29T18:32:45.2875183Z 
+2026-06-29T18:32:45.2875989Z #4 [internal] load .dockerignore
+2026-06-29T18:32:45.2876569Z #4 transferring context: 118B done
+2026-06-29T18:32:45.2877233Z #4 DONE 0.0s
+2026-06-29T18:32:45.2877442Z 
+2026-06-29T18:32:45.2877695Z #5 importing cache manifest from gha:2080184669377724210
+2026-06-29T18:32:45.2878243Z #5 DONE 0.1s
+2026-06-29T18:32:45.2878447Z 
+2026-06-29T18:32:45.2879147Z #6 [base 1/3] FROM docker.io/library/node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2
+2026-06-29T18:32:45.2880578Z #6 resolve docker.io/library/node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2 done
+2026-06-29T18:32:45.2881885Z #6 sha256:d10ff586f6bdbdd6000a70a914e56bf05bedc78de3311d08a953643982d84e23 446B / 446B 0.0s done
+2026-06-29T18:32:45.4310228Z #6 ...
+2026-06-29T18:32:45.4310757Z 
+2026-06-29T18:32:45.4311238Z #7 [internal] load build context
+2026-06-29T18:32:45.4311772Z #7 transferring context: 1.68MB 0.1s done
+2026-06-29T18:32:45.4312355Z #7 DONE 0.1s
+2026-06-29T18:32:45.4312558Z 
+2026-06-29T18:32:45.4313209Z #6 [base 1/3] FROM docker.io/library/node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2
+2026-06-29T18:32:45.4314559Z #6 sha256:1d4d101ceaad39fb56dcac0bb6cc291e6cdec3b711786f0c82b050b5b5b85690 1.26MB / 1.26MB 0.0s done
+2026-06-29T18:32:45.4315843Z #6 sha256:55afa1ecc21d2bb5e5045f32dafee56272ffd89860bac26f6c32123439af26a4 3.85MB / 3.85MB 0.1s done
+2026-06-29T18:32:45.4317362Z #6 extracting sha256:55afa1ecc21d2bb5e5045f32dafee56272ffd89860bac26f6c32123439af26a4
+2026-06-29T18:32:45.4318536Z #6 sha256:3f4c164634d251a8b256151a9e1c1d3e5c5b21f1974f00a213875e66e3fa0801 50.33MB / 52.31MB 0.2s
+2026-06-29T18:32:45.6100716Z #6 extracting sha256:55afa1ecc21d2bb5e5045f32dafee56272ffd89860bac26f6c32123439af26a4 0.1s done
+2026-06-29T18:32:45.6102780Z #6 sha256:3f4c164634d251a8b256151a9e1c1d3e5c5b21f1974f00a213875e66e3fa0801 52.31MB / 52.31MB 0.2s done
+2026-06-29T18:32:45.6104820Z #6 extracting sha256:3f4c164634d251a8b256151a9e1c1d3e5c5b21f1974f00a213875e66e3fa0801
+2026-06-29T18:32:46.4905850Z #6 extracting sha256:3f4c164634d251a8b256151a9e1c1d3e5c5b21f1974f00a213875e66e3fa0801 1.0s done
+2026-06-29T18:32:46.4906710Z #6 DONE 1.2s
+2026-06-29T18:32:46.6707944Z 
+2026-06-29T18:32:46.6708742Z #6 [base 1/3] FROM docker.io/library/node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2
+2026-06-29T18:32:46.6709634Z #6 extracting sha256:1d4d101ceaad39fb56dcac0bb6cc291e6cdec3b711786f0c82b050b5b5b85690 0.0s done
+2026-06-29T18:32:46.6710335Z #6 extracting sha256:d10ff586f6bdbdd6000a70a914e56bf05bedc78de3311d08a953643982d84e23 done
+2026-06-29T18:32:46.6710850Z #6 DONE 1.3s
+2026-06-29T18:32:46.6711499Z 
+2026-06-29T18:32:46.6711809Z #8 [base 2/3] RUN corepack enable && corepack prepare pnpm@latest --activate
+2026-06-29T18:32:46.9246213Z #8 0.404 Preparing pnpm@latest for immediate activation...
+2026-06-29T18:32:47.6187664Z #8 DONE 1.1s
+2026-06-29T18:32:47.7910961Z 
+2026-06-29T18:32:47.7928271Z #9 [base 3/3] WORKDIR /app
+2026-06-29T18:32:47.7928881Z #9 DONE 0.0s
+2026-06-29T18:32:47.7929255Z 
+2026-06-29T18:32:47.7930264Z #10 [deps 1/2] COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+2026-06-29T18:32:47.7930932Z #10 DONE 0.0s
+2026-06-29T18:32:47.7931147Z 
+2026-06-29T18:32:47.7931387Z #11 [deps 2/2] RUN pnpm install --frozen-lockfile
+2026-06-29T18:32:48.8309227Z #11 1.084 ? Verifying lockfile against supply-chain policies (1026 entries)...
+2026-06-29T18:32:48.8310149Z #11 1.099 Lockfile is up to date, resolution step is skipped
+2026-06-29T18:32:48.9836934Z #11 1.343 Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-06-29T18:32:49.2412370Z #11 1.600 Packages: +969
+2026-06-29T18:32:49.2414820Z #11 1.600 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-06-29T18:32:49.9848397Z #11 2.344 Progress: resolved 969, reused 0, downloaded 0, added 0
+2026-06-29T18:32:51.6731257Z #11 4.032 Progress: resolved 969, reused 0, downloaded 1, added 0
+2026-06-29T18:32:52.6654132Z #11 5.025 Progress: resolved 969, reused 0, downloaded 47, added 0
+2026-06-29T18:32:53.6713983Z #11 6.030 Progress: resolved 969, reused 0, downloaded 94, added 4
+2026-06-29T18:32:54.6785792Z #11 7.038 Progress: resolved 969, reused 0, downloaded 171, added 8
+2026-06-29T18:32:55.6864481Z #11 8.046 Progress: resolved 969, reused 0, downloaded 246, added 16
+2026-06-29T18:32:56.6921681Z #11 9.051 Progress: resolved 969, reused 0, downloaded 310, added 20
+2026-06-29T18:32:57.3474159Z #11 ...
+2026-06-29T18:32:57.3475267Z 
+2026-06-29T18:32:57.3475650Z #12 [production 2/6] RUN pnpm install --frozen-lockfile --prod
+2026-06-29T18:32:57.3476514Z #12 1.056 ? Verifying lockfile against supply-chain policies (1026 entries)...
+2026-06-29T18:32:57.3477602Z #12 1.072 Lockfile is up to date, resolution step is skipped
+2026-06-29T18:32:57.3478335Z #12 1.189 Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-06-29T18:32:57.3478956Z #12 1.275 Packages: +463
+2026-06-29T18:32:57.3479512Z #12 1.275 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-06-29T18:32:57.3480269Z #12 2.196 Progress: resolved 463, reused 0, downloaded 0, added 0
+2026-06-29T18:32:57.3481017Z #12 3.208 Progress: resolved 463, reused 0, downloaded 55, added 0
+2026-06-29T18:32:57.3481749Z #12 4.221 Progress: resolved 463, reused 0, downloaded 87, added 4
+2026-06-29T18:32:57.3482519Z #12 5.235 Progress: resolved 463, reused 0, downloaded 178, added 10
+2026-06-29T18:32:57.3483282Z #12 6.244 Progress: resolved 463, reused 0, downloaded 227, added 12
+2026-06-29T18:32:57.3484019Z #12 7.252 Progress: resolved 463, reused 0, downloaded 285, added 17
+2026-06-29T18:32:57.3484759Z #12 8.254 Progress: resolved 463, reused 0, downloaded 321, added 20
+2026-06-29T18:32:57.3485511Z #12 9.257 Progress: resolved 463, reused 0, downloaded 368, added 24
+2026-06-29T18:32:57.7101808Z #12 ...
+2026-06-29T18:32:57.7102758Z 
+2026-06-29T18:32:57.7103369Z #11 [deps 2/2] RUN pnpm install --frozen-lockfile
+2026-06-29T18:32:57.7104399Z #11 10.07 Progress: resolved 969, reused 0, downloaded 366, added 24
+2026-06-29T18:32:58.7249183Z #11 11.08 Progress: resolved 969, reused 0, downloaded 400, added 28
+2026-06-29T18:32:59.7274651Z #11 12.09 Progress: resolved 969, reused 0, downloaded 455, added 32
+2026-06-29T18:33:00.7275051Z #11 13.09 Progress: resolved 969, reused 0, downloaded 520, added 36
+2026-06-29T18:33:01.3170256Z #11 13.68 [WARN] Request took 10713ms: https://registry.npmjs.org/@prisma%2Fdebug
+2026-06-29T18:33:01.4366738Z #11 13.80 [WARN] Request took 10779ms: https://registry.npmjs.org/@prisma%2Fget-platform
+2026-06-29T18:33:01.5920435Z #11 13.95 [WARN] Request took 10935ms: https://registry.npmjs.org/@prisma%2Ffetch-engine
+2026-06-29T18:33:01.7330987Z #11 14.09 Progress: resolved 969, reused 0, downloaded 639, added 44
+2026-06-29T18:33:02.9809226Z #11 15.31 [WARN] Request took 12356ms: https://registry.npmjs.org/@prisma%2Fclient
+2026-06-29T18:33:03.1772439Z #11 15.38 ✓ Lockfile passes supply-chain policies (1026 entries in 14.2s)
+2026-06-29T18:33:03.1773574Z #11 15.39 Progress: resolved 969, reused 0, downloaded 907, added 64
+2026-06-29T18:33:04.0260042Z #11 16.39 Progress: resolved 969, reused 0, downloaded 969, added 757
+2026-06-29T18:33:04.1375109Z #11 16.50 Progress: resolved 969, reused 0, downloaded 969, added 969, done
+2026-06-29T18:33:04.5152689Z #11 16.87 .../node_modules/@scarf/scarf postinstall$ node ./report.js
+2026-06-29T18:33:04.7067764Z #11 16.89 .../node_modules/@nestjs/core postinstall$ opencollective || exit 0
+2026-06-29T18:33:04.7068810Z #11 16.89 .../node_modules/unrs-resolver postinstall$ node postinstall.js
+2026-06-29T18:33:04.7069767Z #11 16.91 .../node_modules/msgpackr-extract install$ node-gyp-build-optional-packages
+2026-06-29T18:33:04.7070782Z #11 16.92 .../esbuild@0.28.0/node_modules/esbuild postinstall$ node install.js
+2026-06-29T18:33:04.7452275Z #11 17.10 .../node_modules/unrs-resolver postinstall: Done
+2026-06-29T18:33:04.9365627Z #11 17.14 .../esbuild@0.28.0/node_modules/esbuild postinstall: Done
+2026-06-29T18:33:04.9366530Z #11 17.15 .../node_modules/@prisma/engines postinstall$ node scripts/postinstall.js
+2026-06-29T18:33:04.9598387Z #11 17.32 .../node_modules/msgpackr-extract install: Done
+2026-06-29T18:33:05.1782480Z #11 17.34 .../node_modules/@nestjs/core postinstall:                            Thanks for installing nest 
+2026-06-29T18:33:05.1784157Z #11 17.34 .../node_modules/@nestjs/core postinstall:                  Please consider donating to our open collective
+2026-06-29T18:33:05.1785930Z #11 17.34 .../node_modules/@nestjs/core postinstall:                         to help us maintain this package.
+2026-06-29T18:33:05.1787727Z #11 17.34 .../node_modules/@nestjs/core postinstall:                                          
+2026-06-29T18:33:05.1789149Z #11 17.34 .../node_modules/@nestjs/core postinstall:                             Number of contributors: 0
+2026-06-29T18:33:05.1790465Z #11 17.34 .../node_modules/@nestjs/core postinstall:                              Number of backers: 1210
+2026-06-29T18:33:05.1791934Z #11 17.36 .../bcrypt@6.0.0/node_modules/bcrypt install$ node-gyp-build
+2026-06-29T18:33:05.1793233Z #11 17.38 .../node_modules/@nestjs/core postinstall:                              Annual budget: $136,704
+2026-06-29T18:33:05.1794459Z #11 17.38 .../node_modules/@nestjs/core postinstall:                              Current balance: $16,008
+2026-06-29T18:33:05.1795641Z #11 17.38 .../node_modules/@nestjs/core postinstall:                                          
+2026-06-29T18:33:05.1797113Z #11 17.39 .../node_modules/@nestjs/core postinstall:              Become a partner: https://opencollective.com/nest/donate
+2026-06-29T18:33:05.1798451Z #11 17.39 .../node_modules/@nestjs/core postinstall:                                          
+2026-06-29T18:33:05.1799479Z #11 17.54 .../node_modules/@nestjs/core postinstall: Done
+2026-06-29T18:33:05.3278369Z #11 17.61 .../bcrypt@6.0.0/node_modules/bcrypt install: Done
+2026-06-29T18:33:05.7765690Z #11 18.14 .../node_modules/@prisma/engines postinstall: Done
+2026-06-29T18:33:07.6762489Z #11 20.04 .../node_modules/@scarf/scarf postinstall: Done
+2026-06-29T18:33:07.8969913Z #11 20.05 .../node_modules/prisma preinstall$ node scripts/preinstall-entry.js
+2026-06-29T18:33:07.8971027Z #11 20.11 .../node_modules/prisma preinstall: Done
+2026-06-29T18:33:08.0470428Z #11 ...
+2026-06-29T18:33:08.0470981Z 
+2026-06-29T18:33:08.0471400Z #12 [production 2/6] RUN pnpm install --frozen-lockfile --prod
+2026-06-29T18:33:08.0471951Z #12 10.26 Progress: resolved 463, reused 0, downloaded 454, added 29
+2026-06-29T18:33:08.0472424Z #12 11.26 Progress: resolved 463, reused 0, downloaded 462, added 88
+2026-06-29T18:33:08.0472887Z #12 12.34 Progress: resolved 463, reused 0, downloaded 463, added 250
+2026-06-29T18:33:08.0473853Z #12 13.49 [WARN] Request took 10274ms: https://registry.npmjs.org/@prisma%2Ffetch-engine
+2026-06-29T18:33:08.0474410Z #12 13.51 Progress: resolved 463, reused 0, downloaded 463, added 392
+2026-06-29T18:33:08.0474887Z #12 13.73 Progress: resolved 463, reused 0, downloaded 463, added 463, done
+2026-06-29T18:33:08.0475402Z #12 14.41 [WARN] Request took 11236ms: https://registry.npmjs.org/@prisma%2Fclient
+2026-06-29T18:33:08.0476226Z #12 14.46 ✓ Lockfile passes supply-chain policies (1026 entries in 13.4s)
+2026-06-29T18:33:08.0476969Z #12 14.47 .../node_modules/@scarf/scarf postinstall$ node ./report.js
+2026-06-29T18:33:08.0477669Z #12 14.47 .../node_modules/@prisma/engines postinstall$ node scripts/postinstall.js
+2026-06-29T18:33:08.0478193Z #12 14.52 .../node_modules/@nestjs/core postinstall$ opencollective || exit 0
+2026-06-29T18:33:08.0478681Z #12 14.53 .../bcrypt@6.0.0/node_modules/bcrypt install$ node-gyp-build
+2026-06-29T18:33:08.0479206Z #12 14.67 .../node_modules/msgpackr-extract install$ node-gyp-build-optional-packages
+2026-06-29T18:33:08.0479707Z #12 14.78 .../node_modules/@nestjs/core postinstall: Done
+2026-06-29T18:33:08.0480114Z #12 14.93 .../bcrypt@6.0.0/node_modules/bcrypt install: Done
+2026-06-29T18:33:08.0480499Z #12 15.02 .../node_modules/msgpackr-extract install: Done
+2026-06-29T18:33:08.0480884Z #12 15.67 .../node_modules/@prisma/engines postinstall: Done
+2026-06-29T18:33:08.0481257Z #12 17.69 .../node_modules/@scarf/scarf postinstall: Done
+2026-06-29T18:33:08.0481698Z #12 17.71 .../node_modules/prisma preinstall$ node scripts/preinstall-entry.js
+2026-06-29T18:33:08.0482149Z #12 17.80 .../node_modules/prisma preinstall: Done
+2026-06-29T18:33:08.0482467Z #12 18.48 
+2026-06-29T18:33:08.0482711Z #12 18.48 dependencies:
+2026-06-29T18:33:08.0482987Z #12 18.48 + @aws-sdk/client-s3 3.1053.0
+2026-06-29T18:33:08.0483322Z #12 18.48 + @aws-sdk/s3-request-presigner 3.1053.0
+2026-06-29T18:33:08.0483649Z #12 18.48 + @keyv/redis 5.1.6
+2026-06-29T18:33:08.0483937Z #12 18.48 + @nestjs/bullmq 11.0.4
+2026-06-29T18:33:08.0484239Z #12 18.48 + @nestjs/cache-manager 3.1.2
+2026-06-29T18:33:08.0484537Z #12 18.48 + @nestjs/common 11.1.24
+2026-06-29T18:33:08.0484825Z #12 18.48 + @nestjs/config 4.0.4
+2026-06-29T18:33:08.0485107Z #12 18.48 + @nestjs/core 11.1.24
+2026-06-29T18:33:08.0485379Z #12 18.48 + @nestjs/jwt 11.0.2
+2026-06-29T18:33:08.0485668Z #12 18.48 + @nestjs/passport 11.0.5
+2026-06-29T18:33:08.0485990Z #12 18.48 + @nestjs/platform-express 11.1.24
+2026-06-29T18:33:08.0486307Z #12 18.48 + @nestjs/swagger 11.4.4
+2026-06-29T18:33:08.0486592Z #12 18.48 + @nestjs/throttler 6.5.0
+2026-06-29T18:33:08.0487004Z #12 18.48 + @prisma/adapter-pg 7.8.0
+2026-06-29T18:33:08.0487301Z #12 18.48 + @prisma/client 7.8.0
+2026-06-29T18:33:08.0487564Z #12 18.48 + bcrypt 6.0.0
+2026-06-29T18:33:08.0487825Z #12 18.48 + bullmq 5.77.3
+2026-06-29T18:33:08.0488088Z #12 18.48 + cache-manager 7.2.8
+2026-06-29T18:33:08.0488376Z #12 18.48 + class-transformer 0.5.1
+2026-06-29T18:33:08.0488668Z #12 18.48 + class-validator 0.15.1
+2026-06-29T18:33:08.0488948Z #12 18.48 + exceljs 4.4.0
+2026-06-29T18:33:08.0489213Z #12 18.48 + geoip-lite 2.0.2
+2026-06-29T18:33:08.0489484Z #12 18.48 + ioredis 5.10.1
+2026-06-29T18:33:08.0489738Z #12 18.48 + joi 18.2.1
+2026-06-29T18:33:08.0489998Z #12 18.48 + nestjs-pino 4.6.1
+2026-06-29T18:33:08.0490276Z #12 18.48 + nodemailer 8.0.8
+2026-06-29T18:33:08.0490548Z #12 18.48 + papaparse 5.5.3
+2026-06-29T18:33:08.0490819Z #12 18.48 + passport 0.7.0
+2026-06-29T18:33:08.0491092Z #12 18.48 + passport-jwt 4.0.1
+2026-06-29T18:33:08.0491370Z #12 18.48 + pg 8.21.0
+2026-06-29T18:33:08.0491625Z #12 18.48 + pino-http 11.0.0
+2026-06-29T18:33:08.0491897Z #12 18.48 + pino-pretty 13.1.3
+2026-06-29T18:33:08.0492166Z #12 18.48 + prisma 7.8.0
+2026-06-29T18:33:08.0492435Z #12 18.48 + reflect-metadata 0.2.2
+2026-06-29T18:33:08.0492721Z #12 18.48 + rxjs 7.8.2
+2026-06-29T18:33:08.0492985Z #12 18.48 + swagger-ui-express 5.0.1
+2026-06-29T18:33:08.0493287Z #12 18.48 + ua-parser-js 2.0.10
+2026-06-29T18:33:08.0493718Z #12 18.48 
+2026-06-29T18:33:08.0493963Z #12 18.48 devDependencies: skipped
+2026-06-29T18:33:08.0494236Z #12 18.48 
+2026-06-29T18:33:08.0494466Z #12 18.55 Done in 18.4s using pnpm v11.9.0
+2026-06-29T18:33:08.1165143Z #12 ...
+2026-06-29T18:33:08.1168770Z 
+2026-06-29T18:33:08.1169515Z #11 [deps 2/2] RUN pnpm install --frozen-lockfile
+2026-06-29T18:33:08.1170197Z #11 20.48 
+2026-06-29T18:33:08.1170584Z #11 20.48 dependencies:
+2026-06-29T18:33:08.1170989Z #11 20.48 + @aws-sdk/client-s3 3.1053.0
+2026-06-29T18:33:08.1172026Z #11 20.48 + @aws-sdk/s3-request-presigner 3.1053.0
+2026-06-29T18:33:08.1172662Z #11 20.48 + @keyv/redis 5.1.6
+2026-06-29T18:33:08.1173088Z #11 20.48 + @nestjs/bullmq 11.0.4
+2026-06-29T18:33:08.1173886Z #11 20.48 + @nestjs/cache-manager 3.1.2
+2026-06-29T18:33:08.1174267Z #11 20.48 + @nestjs/common 11.1.24
+2026-06-29T18:33:08.1174566Z #11 20.48 + @nestjs/config 4.0.4
+2026-06-29T18:33:08.1174848Z #11 20.48 + @nestjs/core 11.1.24
+2026-06-29T18:33:08.1175122Z #11 20.48 + @nestjs/jwt 11.0.2
+2026-06-29T18:33:08.1175424Z #11 20.48 + @nestjs/passport 11.0.5
+2026-06-29T18:33:08.1175755Z #11 20.48 + @nestjs/platform-express 11.1.24
+2026-06-29T18:33:08.1176082Z #11 20.48 + @nestjs/swagger 11.4.4
+2026-06-29T18:33:08.1176371Z #11 20.48 + @nestjs/throttler 6.5.0
+2026-06-29T18:33:08.1176662Z #11 20.48 + @prisma/adapter-pg 7.8.0
+2026-06-29T18:33:08.1177088Z #11 20.48 + @prisma/client 7.8.0
+2026-06-29T18:33:08.1177370Z #11 20.48 + bcrypt 6.0.0
+2026-06-29T18:33:08.1177639Z #11 20.48 + bullmq 5.77.3
+2026-06-29T18:33:08.1177910Z #11 20.48 + cache-manager 7.2.8
+2026-06-29T18:33:08.1178279Z #11 20.48 + class-transformer 0.5.1
+2026-06-29T18:33:08.1178894Z #11 20.48 + class-validator 0.15.1
+2026-06-29T18:33:08.1179348Z #11 20.48 + exceljs 4.4.0
+2026-06-29T18:33:08.1179734Z #11 20.48 + geoip-lite 2.0.2
+2026-06-29T18:33:08.1180116Z #11 20.48 + ioredis 5.10.1
+2026-06-29T18:33:08.1180381Z #11 20.48 + joi 18.2.1
+2026-06-29T18:33:08.1180646Z #11 20.48 + nestjs-pino 4.6.1
+2026-06-29T18:33:08.1180932Z #11 20.48 + nodemailer 8.0.8
+2026-06-29T18:33:08.1181213Z #11 20.48 + papaparse 5.5.3
+2026-06-29T18:33:08.1181490Z #11 20.48 + passport 0.7.0
+2026-06-29T18:33:08.1181768Z #11 20.48 + passport-jwt 4.0.1
+2026-06-29T18:33:08.1182050Z #11 20.48 + pg 8.21.0
+2026-06-29T18:33:08.1182393Z #11 20.48 + pino-http 11.0.0
+2026-06-29T18:33:08.1182725Z #11 20.48 + pino-pretty 13.1.3
+2026-06-29T18:33:08.1183020Z #11 20.48 + prisma 7.8.0
+2026-06-29T18:33:08.1183423Z #11 20.48 + reflect-metadata 0.2.2
+2026-06-29T18:33:08.1183715Z #11 20.48 + rxjs 7.8.2
+2026-06-29T18:33:08.1184057Z #11 20.48 + swagger-ui-express 5.0.1
+2026-06-29T18:33:08.1184501Z #11 20.48 + ua-parser-js 2.0.10
+2026-06-29T18:33:08.1184928Z #11 20.48 
+2026-06-29T18:33:08.1185236Z #11 20.48 devDependencies:
+2026-06-29T18:33:08.1185524Z #11 20.48 + @eslint/eslintrc 3.3.5
+2026-06-29T18:33:08.1185933Z #11 20.48 + @eslint/js 9.39.4
+2026-06-29T18:33:08.1186221Z #11 20.48 + @nestjs/cli 11.0.21
+2026-06-29T18:33:08.1186585Z #11 20.48 + @nestjs/schematics 11.1.0
+2026-06-29T18:33:08.1187046Z #11 20.48 + @nestjs/testing 11.1.24
+2026-06-29T18:33:08.1187408Z #11 20.48 + @types/bcrypt 6.0.0
+2026-06-29T18:33:08.1187754Z #11 20.48 + @types/express 5.0.6
+2026-06-29T18:33:08.1188042Z #11 20.48 + @types/geoip-lite 1.4.4
+2026-06-29T18:33:08.1188469Z #11 20.48 + @types/jest 30.0.0
+2026-06-29T18:33:08.1188758Z #11 20.48 + @types/node 22.19.19
+2026-06-29T18:33:08.1189119Z #11 20.48 + @types/nodemailer 7.0.11
+2026-06-29T18:33:08.1189488Z #11 20.48 + @types/papaparse 5.5.2
+2026-06-29T18:33:08.1189793Z #11 20.48 + @types/passport-jwt 4.0.1
+2026-06-29T18:33:08.1190374Z #11 20.48 + @types/pg 8.20.0
+2026-06-29T18:33:08.1204939Z #11 20.48 + @types/supertest 6.0.3
+2026-06-29T18:33:08.1205302Z #11 20.48 + @types/ua-parser-js 0.7.39
+2026-06-29T18:33:08.1205651Z #11 20.48 + dotenv 17.4.2
+2026-06-29T18:33:08.1205926Z #11 20.48 + eslint 9.39.4
+2026-06-29T18:33:08.1206196Z #11 20.48 + eslint-config-prettier 10.1.8
+2026-06-29T18:33:08.1206613Z #11 20.48 + eslint-plugin-prettier 5.5.5
+2026-06-29T18:33:08.1207614Z #11 20.48 + globals 16.5.0
+2026-06-29T18:33:08.1208122Z #11 20.48 + jest 30.4.2
+2026-06-29T18:33:08.1208379Z #11 20.48 + prettier 3.8.3
+2026-06-29T18:33:08.1208648Z #11 20.48 + source-map-support 0.5.21
+2026-06-29T18:33:08.1208943Z #11 20.48 + supertest 7.2.2
+2026-06-29T18:33:08.1209212Z #11 20.48 + ts-jest 29.4.11
+2026-06-29T18:33:08.1209462Z #11 20.48 + ts-loader 9.5.7
+2026-06-29T18:33:08.1209706Z #11 20.48 + ts-node 10.9.2
+2026-06-29T18:33:08.1209973Z #11 20.48 + tsconfig-paths 4.2.0
+2026-06-29T18:33:08.1210251Z #11 20.48 + tsx 4.22.3
+2026-06-29T18:33:08.1210510Z #11 20.48 + typescript 5.9.3
+2026-06-29T18:33:08.1210788Z #11 20.48 + typescript-eslint 8.59.4
+2026-06-29T18:33:08.1211066Z #11 20.48 
+2026-06-29T18:33:08.2367837Z #11 20.60 Done in 20.4s using pnpm v11.9.0
+2026-06-29T18:33:08.8015636Z #11 ...
+2026-06-29T18:33:08.8016323Z 
+2026-06-29T18:33:08.8017768Z #12 [production 2/6] RUN pnpm install --frozen-lockfile --prod
+2026-06-29T18:33:08.8019819Z #12 DONE 21.2s
+2026-06-29T18:33:08.9525744Z 
+2026-06-29T18:33:08.9526456Z #11 [deps 2/2] RUN pnpm install --frozen-lockfile
+2026-06-29T18:33:08.9527400Z #11 DONE 21.2s
+2026-06-29T18:33:12.0376913Z 
+2026-06-29T18:33:12.0378596Z #13 [builder 1/3] COPY --from=deps /app/node_modules ./node_modules
+2026-06-29T18:33:18.4436080Z #13 DONE 6.4s
+2026-06-29T18:33:18.5941209Z 
+2026-06-29T18:33:18.5941704Z #14 [builder 2/3] COPY . .
+2026-06-29T18:33:18.8773916Z #14 DONE 0.4s
+2026-06-29T18:33:19.0289904Z 
+2026-06-29T18:33:19.0290448Z #15 [builder 3/3] RUN pnpm prisma:generate && pnpm build
+2026-06-29T18:33:19.6395742Z #15 0.761 $ prisma generate
+2026-06-29T18:33:20.7185869Z #15 1.840 Loaded Prisma config from prisma.config.ts.
+2026-06-29T18:33:20.7186492Z #15 1.840 
+2026-06-29T18:33:20.9268234Z #15 1.897 Prisma schema loaded from prisma/schema.prisma.
+2026-06-29T18:33:21.1982442Z #15 2.320 
+2026-06-29T18:33:21.1983386Z #15 2.320 ✔ Generated Prisma Client (7.8.0) to ./generated/prisma in 282ms
+2026-06-29T18:33:21.1983830Z #15 2.320 
+2026-06-29T18:33:21.7909008Z #15 2.913 $ nest build
+2026-06-29T18:33:30.7011404Z #15 DONE 11.8s
+2026-06-29T18:33:31.6495618Z 
+2026-06-29T18:33:31.6496341Z #16 [production 3/6] COPY --from=builder /app/dist ./dist
+2026-06-29T18:33:32.0970649Z #16 DONE 0.4s
+2026-06-29T18:33:32.2823701Z 
+2026-06-29T18:33:32.2825384Z #17 [production 4/6] COPY --from=builder /app/generated ./generated
+2026-06-29T18:33:32.2826086Z #17 DONE 0.0s
+2026-06-29T18:33:32.2826286Z 
+2026-06-29T18:33:32.2826569Z #18 [production 5/6] COPY --from=builder /app/prisma ./prisma
+2026-06-29T18:33:32.2827299Z #18 DONE 0.0s
+2026-06-29T18:33:32.2827505Z 
+2026-06-29T18:33:32.2827804Z #19 [production 6/6] COPY --from=builder /app/prisma.config.ts ./
+2026-06-29T18:33:32.2828382Z #19 DONE 0.0s
+2026-06-29T18:33:32.2828571Z 
+2026-06-29T18:33:32.2828762Z #20 exporting to image
+2026-06-29T18:33:32.2829155Z #20 exporting layers
+2026-06-29T18:34:00.9085710Z #20 exporting layers 28.8s done
+2026-06-29T18:34:01.0786674Z #20 exporting manifest sha256:469a29d2ae58bb302e8e4245e6da9f12dc0a6522a8553ef03f26fbcbf8ecc2dc done
+2026-06-29T18:34:01.0788429Z #20 exporting config sha256:4958a97af972f016d89163781ef8c2d4990bf6c8c7b7f1687818a422798ad681 done
+2026-06-29T18:34:01.0789970Z #20 exporting attestation manifest sha256:9cb458c11b9ea7c79b9959a51256e1f227e3171dc99931a20f7ea7bba5372d6c done
+2026-06-29T18:34:01.0791468Z #20 exporting manifest list sha256:d58481a5cd8dd231a5243cf0678e52bd538fb487329faad5b4f2f28c665d33e6 done
+2026-06-29T18:34:01.0792552Z #20 pushing layers
+2026-06-29T18:34:01.0793232Z #20 ...
+2026-06-29T18:34:01.0793459Z 
+2026-06-29T18:34:01.0793655Z #21 exporting to GitHub Actions Cache
+2026-06-29T18:34:01.0794184Z #21 preparing build cache for export
+2026-06-29T18:34:02.0717739Z #21 ...
+2026-06-29T18:34:02.0718002Z 
+2026-06-29T18:34:02.0718599Z #22 [auth] sharing credentials for ***.dkr.ecr.***.amazonaws.com
+2026-06-29T18:34:02.0719143Z #22 DONE 0.0s
+2026-06-29T18:34:02.2209037Z 
+2026-06-29T18:34:02.2213484Z #21 exporting to GitHub Actions Cache
+2026-06-29T18:34:25.6174970Z #21 ...
+2026-06-29T18:34:25.6175673Z 
+2026-06-29T18:34:25.6175854Z #20 exporting to image
+2026-06-29T18:34:25.6176304Z #20 pushing layers 24.7s done
+2026-06-29T18:34:25.6177971Z #20 pushing manifest for ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960@sha256:d58481a5cd8dd231a5243cf0678e52bd538fb487329faad5b4f2f28c665d33e6
+2026-06-29T18:34:27.6331090Z #20 pushing manifest for ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960@sha256:d58481a5cd8dd231a5243cf0678e52bd538fb487329faad5b4f2f28c665d33e6 2.0s done
+2026-06-29T18:34:28.6154868Z #20 pushing layers 1.0s done
+2026-06-29T18:34:28.6156494Z #20 pushing manifest for ***.dkr.ecr.***.amazonaws.com/***:latest@sha256:d58481a5cd8dd231a5243cf0678e52bd538fb487329faad5b4f2f28c665d33e6
+2026-06-29T18:34:29.7735469Z #20 pushing manifest for ***.dkr.ecr.***.amazonaws.com/***:latest@sha256:d58481a5cd8dd231a5243cf0678e52bd538fb487329faad5b4f2f28c665d33e6 1.2s done
+2026-06-29T18:34:29.7736631Z #20 DONE 57.6s
+2026-06-29T18:34:29.7737053Z 
+2026-06-29T18:34:29.7737249Z #21 exporting to GitHub Actions Cache
+2026-06-29T18:34:58.9580696Z #21 preparing build cache for export 58.0s done
+2026-06-29T18:34:58.9581329Z #21 sending cache export
+2026-06-29T18:34:59.1711057Z #21 writing layer sha256:0c732ab570e4debc9fc9aabf339e0a725f0ddefc2cda59b14b51a6c608d42a95
+2026-06-29T18:34:59.2436512Z #21 writing layer sha256:0c732ab570e4debc9fc9aabf339e0a725f0ddefc2cda59b14b51a6c608d42a95 0.2s done
+2026-06-29T18:34:59.4162078Z #21 writing layer sha256:17587a06538985daa0bc0afbf94c6906299f8c3e7114355dc399ac4fc22825e6
+2026-06-29T18:35:13.8246706Z #21 writing layer sha256:17587a06538985daa0bc0afbf94c6906299f8c3e7114355dc399ac4fc22825e6 14.6s done
+2026-06-29T18:35:13.9561787Z #21 writing layer sha256:180dab558b0e61cebc531867c79dfa6d76643851cc91592f2663684d82c71994 0.1s done
+2026-06-29T18:35:14.1403120Z #21 writing layer sha256:1d4d101ceaad39fb56dcac0bb6cc291e6cdec3b711786f0c82b050b5b5b85690
+2026-06-29T18:35:14.2026588Z #21 writing layer sha256:1d4d101ceaad39fb56dcac0bb6cc291e6cdec3b711786f0c82b050b5b5b85690 0.2s done
+2026-06-29T18:35:14.3719090Z #21 writing layer sha256:21e5ec0c434b1688042c9be0becd037c4cd1fc8e453efcb81952cf06ac6e2de0
+2026-06-29T18:35:14.6803157Z #21 writing layer sha256:21e5ec0c434b1688042c9be0becd037c4cd1fc8e453efcb81952cf06ac6e2de0 0.5s done
+2026-06-29T18:35:14.8184051Z #21 writing layer sha256:3305bca0cf7a9d36d8739b785582eea555b7fc1d7e8b9189a847cbe16fad20bc 0.1s done
+2026-06-29T18:35:14.9872868Z #21 writing layer sha256:3c68cbd3f0d780b8e011a348ba8ccda5d7243f0fc350e61d2bbff304bd223685
+2026-06-29T18:35:26.4334553Z #21 writing layer sha256:3c68cbd3f0d780b8e011a348ba8ccda5d7243f0fc350e61d2bbff304bd223685 11.6s done
+2026-06-29T18:35:26.6044082Z #21 writing layer sha256:3f4c164634d251a8b256151a9e1c1d3e5c5b21f1974f00a213875e66e3fa0801
+2026-06-29T18:35:29.5787375Z #21 writing layer sha256:3f4c164634d251a8b256151a9e1c1d3e5c5b21f1974f00a213875e66e3fa0801 3.1s done
+2026-06-29T18:35:29.7556165Z #21 writing layer sha256:55afa1ecc21d2bb5e5045f32dafee56272ffd89860bac26f6c32123439af26a4
+2026-06-29T18:35:29.9362245Z #21 writing layer sha256:55afa1ecc21d2bb5e5045f32dafee56272ffd89860bac26f6c32123439af26a4 0.3s done
+2026-06-29T18:35:30.1043277Z #21 writing layer sha256:90caa2519b56ca19e2573fc918414298e3495754cab2c091e72073061bdaf1a7
+2026-06-29T18:35:30.1254674Z #21 writing layer sha256:90caa2519b56ca19e2573fc918414298e3495754cab2c091e72073061bdaf1a7 0.2s done
+2026-06-29T18:35:30.2593708Z #21 writing layer sha256:98eef50915704bd40bd3dbaec716d32b07fe074f3a2731d6d92d04da87968893 0.1s done
+2026-06-29T18:35:30.4434611Z #21 writing layer sha256:afa4dfdc66710fad8301ecdb53065d3e11400ca26ae5c73f464602a91e953bda
+2026-06-29T18:35:30.4900933Z #21 writing layer sha256:afa4dfdc66710fad8301ecdb53065d3e11400ca26ae5c73f464602a91e953bda 0.2s done
+2026-06-29T18:35:30.6680530Z #21 writing layer sha256:c33939763f569fdce84c4a4a41edf775aac37514d9441f9caaa66345338cf443
+2026-06-29T18:35:30.6821359Z #21 writing layer sha256:c33939763f569fdce84c4a4a41edf775aac37514d9441f9caaa66345338cf443 0.2s done
+2026-06-29T18:35:30.8458705Z #21 writing layer sha256:d10ff586f6bdbdd6000a70a914e56bf05bedc78de3311d08a953643982d84e23 0.1s done
+2026-06-29T18:35:30.9939506Z #21 writing layer sha256:d4505bad3fb246c4d09c4b8f89d92dccce393ececce665025ed4f06431b31ed2 0.1s done
+2026-06-29T18:35:31.1672081Z #21 writing layer sha256:de59c6f75658f902311ed3b49403750a948e405cc6f8725780b6dae10d5ccb6d
+2026-06-29T18:35:38.0581513Z #21 writing layer sha256:de59c6f75658f902311ed3b49403750a948e405cc6f8725780b6dae10d5ccb6d 7.0s done
+2026-06-29T18:35:38.1739140Z #21 sending cache export 39.2s done
+2026-06-29T18:35:38.1739691Z #21 DONE 97.2s
+2026-06-29T18:35:38.2005057Z 
+2026-06-29T18:35:38.2005540Z #23 resolving provenance for metadata file
+2026-06-29T18:35:38.2006054Z #23 DONE 0.0s
+2026-06-29T18:35:38.2079785Z ##[group]ImageID
+2026-06-29T18:35:38.2080708Z sha256:d58481a5cd8dd231a5243cf0678e52bd538fb487329faad5b4f2f28c665d33e6
+2026-06-29T18:35:38.2081609Z ##[endgroup]
+2026-06-29T18:35:38.2082124Z ##[group]Digest
+2026-06-29T18:35:38.2082623Z sha256:d58481a5cd8dd231a5243cf0678e52bd538fb487329faad5b4f2f28c665d33e6
+2026-06-29T18:35:38.2083427Z ##[endgroup]
+2026-06-29T18:35:38.2084008Z ##[group]Metadata
+2026-06-29T18:35:38.2084316Z {
+2026-06-29T18:35:38.2084554Z   "buildx.build.provenance": {
+2026-06-29T18:35:38.2084839Z     "builder": {
+2026-06-29T18:35:38.2085346Z       "id": "https://github.com/ssangnd/yehub-platform-clone-for-testing/actions/runs/28394190050/attempts/1"
+2026-06-29T18:35:38.2085872Z     },
+2026-06-29T18:35:38.2086160Z     "buildType": "https://mobyproject.org/buildkit@v1",
+2026-06-29T18:35:38.2086511Z     "materials": [
+2026-06-29T18:35:38.2086961Z       {
+2026-06-29T18:35:38.2087474Z         "uri": "pkg:docker/node@22-alpine?platform=linux%2Famd64",
+2026-06-29T18:35:38.2088034Z         "digest": {
+2026-06-29T18:35:38.2088614Z           "sha256": "16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2"
+2026-06-29T18:35:38.2089075Z         }
+2026-06-29T18:35:38.2089388Z       }
+2026-06-29T18:35:38.2089686Z     ],
+2026-06-29T18:35:38.2089993Z     "invocation": {
+2026-06-29T18:35:38.2090364Z       "configSource": {
+2026-06-29T18:35:38.2090759Z         "entryPoint": "Dockerfile"
+2026-06-29T18:35:38.2091121Z       },
+2026-06-29T18:35:38.2091339Z       "parameters": {
+2026-06-29T18:35:38.2091601Z         "frontend": "dockerfile.v0",
+2026-06-29T18:35:38.2091884Z         "locals": [
+2026-06-29T18:35:38.2092106Z           {
+2026-06-29T18:35:38.2092328Z             "name": "context"
+2026-06-29T18:35:38.2092581Z           },
+2026-06-29T18:35:38.2092792Z           {
+2026-06-29T18:35:38.2093102Z             "name": "dockerfile"
+2026-06-29T18:35:38.2093492Z           }
+2026-06-29T18:35:38.2093798Z         ],
+2026-06-29T18:35:38.2094080Z         "root": {
+2026-06-29T18:35:38.2094377Z           "configSource": {
+2026-06-29T18:35:38.2094789Z             "path": "Dockerfile"
+2026-06-29T18:35:38.2095183Z           },
+2026-06-29T18:35:38.2095476Z           "request": {
+2026-06-29T18:35:38.2095717Z             "args": {
+2026-06-29T18:35:38.2095986Z               "vcs:localdir:context": "yehub-be",
+2026-06-29T18:35:38.2096345Z               "vcs:localdir:dockerfile": "yehub-be",
+2026-06-29T18:35:38.2096743Z               "vcs:revision": "aa10dc5912622668d4d4b49845aef092c4dbb18d",
+2026-06-29T18:35:38.2097478Z               "vcs:source": "https://github.com/ssangnd/yehub-platform-clone-for-testing"
+2026-06-29T18:35:38.2098041Z             }
+2026-06-29T18:35:38.2098256Z           }
+2026-06-29T18:35:38.2098463Z         },
+2026-06-29T18:35:38.2098701Z         "compatibilityVersion": 20
+2026-06-29T18:35:38.2098974Z       },
+2026-06-29T18:35:38.2099185Z       "environment": {
+2026-06-29T18:35:38.2099445Z         "dockerfileVersion": "1.24.0",
+2026-06-29T18:35:38.2099738Z         "github_actor": "ssangnd",
+2026-06-29T18:35:38.2100021Z         "github_actor_id": "75923274",
+2026-06-29T18:35:38.2100355Z         "github_event_name": "workflow_dispatch",
+2026-06-29T18:35:38.2100708Z         "github_event_payload": {
+2026-06-29T18:35:38.2100988Z           "inputs": {
+2026-06-29T18:35:38.2101232Z             "deploy_api": "true",
+2026-06-29T18:35:38.2101771Z             "deploy_worker": "false"
+2026-06-29T18:35:38.2102047Z           },
+2026-06-29T18:35:38.2102280Z           "ref": "refs/tags/v1.0.11",
+2026-06-29T18:35:38.2102575Z           "repository": {
+2026-06-29T18:35:38.2102832Z             "allow_forking": true,
+2026-06-29T18:35:38.2103379Z             "archive_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/{archive_format}{/ref}",
+2026-06-29T18:35:38.2103971Z             "archived": false,
+2026-06-29T18:35:38.2104547Z             "assignees_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/assignees{/user}",
+2026-06-29T18:35:38.2105626Z             "blobs_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/git/blobs{/sha}",
+2026-06-29T18:35:38.2107048Z             "branches_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/branches{/branch}",
+2026-06-29T18:35:38.2108316Z             "clone_url": "https://github.com/ssangnd/yehub-platform-clone-for-testing.git",
+2026-06-29T18:35:38.2109574Z             "collaborators_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/collaborators{/collaborator}",
+2026-06-29T18:35:38.2111050Z             "comments_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/comments{/number}",
+2026-06-29T18:35:38.2112072Z             "commits_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/commits{/sha}",
+2026-06-29T18:35:38.2112857Z             "compare_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/compare/{base}...{head}",
+2026-06-29T18:35:38.2113675Z             "contents_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/contents/{+path}",
+2026-06-29T18:35:38.2114519Z             "contributors_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/contributors",
+2026-06-29T18:35:38.2115177Z             "created_at": "2026-06-28T12:50:58Z",
+2026-06-29T18:35:38.2115578Z             "default_branch": "main",
+2026-06-29T18:35:38.2116131Z             "deployments_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/deployments",
+2026-06-29T18:35:38.2116716Z             "description": null,
+2026-06-29T18:35:38.2117558Z             "disabled": false,
+2026-06-29T18:35:38.2118125Z             "downloads_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/downloads",
+2026-06-29T18:35:38.2118929Z             "events_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/events",
+2026-06-29T18:35:38.2119459Z             "fork": false,
+2026-06-29T18:35:38.2119824Z             "forks": 0,
+2026-06-29T18:35:38.2120165Z             "forks_count": 0,
+2026-06-29T18:35:38.2120765Z             "forks_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/forks",
+2026-06-29T18:35:38.2121460Z             "full_name": "ssangnd/yehub-platform-clone-for-testing",
+2026-06-29T18:35:38.2122140Z             "git_commits_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/git/commits{/sha}",
+2026-06-29T18:35:38.2122945Z             "git_refs_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/git/refs{/sha}",
+2026-06-29T18:35:38.2123711Z             "git_tags_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/git/tags{/sha}",
+2026-06-29T18:35:38.2124398Z             "git_url": "git://github.com/ssangnd/yehub-platform-clone-for-testing.git",
+2026-06-29T18:35:38.2124870Z             "has_discussions": false,
+2026-06-29T18:35:38.2125188Z             "has_downloads": true,
+2026-06-29T18:35:38.2125489Z             "has_issues": true,
+2026-06-29T18:35:38.2125799Z             "has_pages": false,
+2026-06-29T18:35:38.2126089Z             "has_projects": true,
+2026-06-29T18:35:38.2126393Z             "has_pull_requests": true,
+2026-06-29T18:35:38.2126714Z             "has_wiki": true,
+2026-06-29T18:35:38.2127208Z             "homepage": null,
+2026-06-29T18:35:38.2127900Z             "hooks_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/hooks",
+2026-06-29T18:35:38.2128562Z             "html_url": "https://github.com/ssangnd/yehub-platform-clone-for-testing",
+2026-06-29T18:35:38.2129017Z             "id": 1283005215,
+2026-06-29T18:35:38.2129292Z             "is_template": false,
+2026-06-29T18:35:38.2129882Z             "issue_comment_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/issues/comments{/number}",
+2026-06-29T18:35:38.2130784Z             "issue_events_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/issues/events{/number}",
+2026-06-29T18:35:38.2131740Z             "issues_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/issues{/number}",
+2026-06-29T18:35:38.2132514Z             "keys_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/keys{/key_id}",
+2026-06-29T18:35:38.2133267Z             "labels_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/labels{/name}",
+2026-06-29T18:35:38.2133821Z             "language": "TypeScript",
+2026-06-29T18:35:38.2134336Z             "languages_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/languages",
+2026-06-29T18:35:38.2134883Z             "license": null,
+2026-06-29T18:35:38.2135385Z             "merges_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/merges",
+2026-06-29T18:35:38.2136171Z             "milestones_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/milestones{/number}",
+2026-06-29T18:35:38.2137034Z             "mirror_url": null,
+2026-06-29T18:35:38.2137416Z             "name": "yehub-platform-clone-for-testing",
+2026-06-29T18:35:38.2137789Z             "node_id": "R_kgDOTHkbHw",
+2026-06-29T18:35:38.2138504Z             "notifications_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/notifications{?since,all,participating}",
+2026-06-29T18:35:38.2139223Z             "open_issues": 0,
+2026-06-29T18:35:38.2139530Z             "open_issues_count": 0,
+2026-06-29T18:35:38.2139836Z             "owner": {
+2026-06-29T18:35:38.2140249Z               "avatar_url": "https://avatars.githubusercontent.com/u/75923274?v=4",
+2026-06-29T18:35:38.2140790Z               "events_url": "https://api.github.com/users/ssangnd/events{/privacy}",
+2026-06-29T18:35:38.2141336Z               "followers_url": "https://api.github.com/users/ssangnd/followers",
+2026-06-29T18:35:38.2141910Z               "following_url": "https://api.github.com/users/ssangnd/following{/other_user}",
+2026-06-29T18:35:38.2142525Z               "gists_url": "https://api.github.com/users/ssangnd/gists{/gist_id}",
+2026-06-29T18:35:38.2143006Z               "gravatar_id": "",
+2026-06-29T18:35:38.2143313Z               "html_url": "https://github.com/ssangnd",
+2026-06-29T18:35:38.2143668Z               "id": 75923274,
+2026-06-29T18:35:38.2143934Z               "login": "ssangnd",
+2026-06-29T18:35:38.2144266Z               "node_id": "MDQ6VXNlcjc1OTIzMjc0",
+2026-06-29T18:35:38.2144700Z               "organizations_url": "https://api.github.com/users/ssangnd/orgs",
+2026-06-29T18:35:38.2145234Z               "received_events_url": "https://api.github.com/users/ssangnd/received_events",
+2026-06-29T18:35:38.2145754Z               "repos_url": "https://api.github.com/users/ssangnd/repos",
+2026-06-29T18:35:38.2146125Z               "site_admin": false,
+2026-06-29T18:35:38.2146689Z               "starred_url": "https://api.github.com/users/ssangnd/starred{/owner}{/repo}",
+2026-06-29T18:35:38.2147598Z               "subscriptions_url": "https://api.github.com/users/ssangnd/subscriptions",
+2026-06-29T18:35:38.2148072Z               "type": "User",
+2026-06-29T18:35:38.2148587Z               "url": "https://api.github.com/users/ssangnd",
+2026-06-29T18:35:38.2149086Z               "user_view_type": "public"
+2026-06-29T18:35:38.2149539Z             },
+2026-06-29T18:35:38.2150013Z             "private": false,
+2026-06-29T18:35:38.2150330Z             "pull_request_creation_policy": "all",
+2026-06-29T18:35:38.2150887Z             "pulls_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/pulls{/number}",
+2026-06-29T18:35:38.2151411Z             "pushed_at": "2026-06-29T18:31:44Z",
+2026-06-29T18:35:38.2151924Z             "releases_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/releases{/id}",
+2026-06-29T18:35:38.2152433Z             "size": 1890,
+2026-06-29T18:35:38.2152814Z             "ssh_url": "git@github.com:ssangnd/yehub-platform-clone-for-testing.git",
+2026-06-29T18:35:38.2153232Z             "stargazers_count": 0,
+2026-06-29T18:35:38.2153850Z             "stargazers_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/stargazers",
+2026-06-29T18:35:38.2154583Z             "statuses_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/statuses/{sha}",
+2026-06-29T18:35:38.2155312Z             "subscribers_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/subscribers",
+2026-06-29T18:35:38.2156044Z             "subscription_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/subscription",
+2026-06-29T18:35:38.2156683Z             "svn_url": "https://github.com/ssangnd/yehub-platform-clone-for-testing",
+2026-06-29T18:35:38.2157496Z             "tags_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/tags",
+2026-06-29T18:35:38.2158144Z             "teams_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/teams",
+2026-06-29T18:35:38.2158618Z             "topics": [],
+2026-06-29T18:35:38.2159092Z             "trees_url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing/git/trees{/sha}",
+2026-06-29T18:35:38.2159609Z             "updated_at": "2026-06-29T18:31:26Z",
+2026-06-29T18:35:38.2160061Z             "url": "https://api.github.com/repos/ssangnd/yehub-platform-clone-for-testing",
+2026-06-29T18:35:38.2160517Z             "visibility": "public",
+2026-06-29T18:35:38.2160840Z             "watchers": 0,
+2026-06-29T18:35:38.2161111Z             "watchers_count": 0,
+2026-06-29T18:35:38.2161411Z             "web_commit_signoff_required": false
+2026-06-29T18:35:38.2161713Z           },
+2026-06-29T18:35:38.2161945Z           "sender": {
+2026-06-29T18:35:38.2162313Z             "avatar_url": "https://avatars.githubusercontent.com/u/75923274?v=4",
+2026-06-29T18:35:38.2162825Z             "events_url": "https://api.github.com/users/ssangnd/events{/privacy}",
+2026-06-29T18:35:38.2163323Z             "followers_url": "https://api.github.com/users/ssangnd/followers",
+2026-06-29T18:35:38.2163855Z             "following_url": "https://api.github.com/users/ssangnd/following{/other_user}",
+2026-06-29T18:35:38.2164376Z             "gists_url": "https://api.github.com/users/ssangnd/gists{/gist_id}",
+2026-06-29T18:35:38.2164769Z             "gravatar_id": "",
+2026-06-29T18:35:38.2165079Z             "html_url": "https://github.com/ssangnd",
+2026-06-29T18:35:38.2165403Z             "id": 75923274,
+2026-06-29T18:35:38.2165671Z             "login": "ssangnd",
+2026-06-29T18:35:38.2165967Z             "node_id": "MDQ6VXNlcjc1OTIzMjc0",
+2026-06-29T18:35:38.2166368Z             "organizations_url": "https://api.github.com/users/ssangnd/orgs",
+2026-06-29T18:35:38.2167103Z             "received_events_url": "https://api.github.com/users/ssangnd/received_events",
+2026-06-29T18:35:38.2167612Z             "repos_url": "https://api.github.com/users/ssangnd/repos",
+2026-06-29T18:35:38.2167984Z             "site_admin": false,
+2026-06-29T18:35:38.2168390Z             "starred_url": "https://api.github.com/users/ssangnd/starred{/owner}{/repo}",
+2026-06-29T18:35:38.2168928Z             "subscriptions_url": "https://api.github.com/users/ssangnd/subscriptions",
+2026-06-29T18:35:38.2169348Z             "type": "User",
+2026-06-29T18:35:38.2169652Z             "url": "https://api.github.com/users/ssangnd",
+2026-06-29T18:35:38.2170411Z             "user_view_type": "public"
+2026-06-29T18:35:38.2170695Z           },
+2026-06-29T18:35:38.2170981Z           "workflow": ".github/workflows/be-quick-deploy.yml"
+2026-06-29T18:35:38.2171314Z         },
+2026-06-29T18:35:38.2171548Z         "github_job": "build-push",
+2026-06-29T18:35:38.2171843Z         "github_ref": "refs/tags/v1.0.11",
+2026-06-29T18:35:38.2172144Z         "github_ref_name": "v1.0.11",
+2026-06-29T18:35:38.2172441Z         "github_ref_protected": "false",
+2026-06-29T18:35:38.2172743Z         "github_ref_type": "tag",
+2026-06-29T18:35:38.2173123Z         "github_repository": "ssangnd/yehub-platform-clone-for-testing",
+2026-06-29T18:35:38.2173666Z         "github_repository_id": "1283005215",
+2026-06-29T18:35:38.2173992Z         "github_repository_owner": "ssangnd",
+2026-06-29T18:35:38.2174313Z         "github_repository_owner_id": "75923274",
+2026-06-29T18:35:38.2174639Z         "github_run_attempt": "1",
+2026-06-29T18:35:38.2174928Z         "github_run_id": "28394190050",
+2026-06-29T18:35:38.2175221Z         "github_run_number": "4",
+2026-06-29T18:35:38.2175504Z         "github_runner_arch": "X64",
+2026-06-29T18:35:38.2175831Z         "github_runner_environment": "github-hosted",
+2026-06-29T18:35:38.2176172Z         "github_runner_image_os": "ubuntu24",
+2026-06-29T18:35:38.2176502Z         "github_runner_image_version": "20260622.220.1",
+2026-06-29T18:35:38.2177379Z         "github_runner_name": "GitHub Actions 1000000272",
+2026-06-29T18:35:38.2177769Z         "github_runner_os": "Linux",
+2026-06-29T18:35:38.2178180Z         "github_runner_tracking_id": "github_b8f36580-01cd-4092-b31e-969170d6e2d6",
+2026-06-29T18:35:38.2178673Z         "github_server_url": "https://github.com",
+2026-06-29T18:35:38.2179027Z         "github_triggering_actor": "ssangnd",
+2026-06-29T18:35:38.2180026Z         "github_workflow": "Backend — Quick Deploy (Build + ECR + Beanstalk)",
+2026-06-29T18:35:38.2181235Z         "github_workflow_ref": "ssangnd/yehub-platform-clone-for-testing/.github/workflows/be-quick-deploy.yml@refs/tags/v1.0.11",
+2026-06-29T18:35:38.2182408Z         "github_workflow_sha": "aa10dc5912622668d4d4b49845aef092c4dbb18d",
+2026-06-29T18:35:38.2183048Z         "platform": "linux/amd64"
+2026-06-29T18:35:38.2183463Z       }
+2026-06-29T18:35:38.2183777Z     }
+2026-06-29T18:35:38.2184082Z   },
+2026-06-29T18:35:38.2185044Z   "buildx.build.ref": "builder-7925546f-cb0e-455b-8bc2-3849f65afb20/builder-7925546f-cb0e-455b-8bc2-3849f65afb200/m65zexxx287hjk7x78pxc6jqg",
+2026-06-29T18:35:38.2186166Z   "containerimage.descriptor": {
+2026-06-29T18:35:38.2186737Z     "mediaType": "application/vnd.oci.image.index.v1+json",
+2026-06-29T18:35:38.2187859Z     "digest": "sha256:d58481a5cd8dd231a5243cf0678e52bd538fb487329faad5b4f2f28c665d33e6",
+2026-06-29T18:35:38.2188591Z     "size": 856
+2026-06-29T18:35:38.2188922Z   },
+2026-06-29T18:35:38.2189618Z   "containerimage.digest": "sha256:d58481a5cd8dd231a5243cf0678e52bd538fb487329faad5b4f2f28c665d33e6",
+2026-06-29T18:35:38.2191403Z   "image.name": "***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960,***.dkr.ecr.***.amazonaws.com/***:latest"
+2026-06-29T18:35:38.2192245Z }
+2026-06-29T18:35:38.2192883Z ##[endgroup]
+2026-06-29T18:35:38.2193481Z ##[group]Reference
+2026-06-29T18:35:38.2194420Z builder-7925546f-cb0e-455b-8bc2-3849f65afb20/builder-7925546f-cb0e-455b-8bc2-3849f65afb200/m65zexxx287hjk7x78pxc6jqg
+2026-06-29T18:35:38.2195655Z ##[endgroup]
+2026-06-29T18:35:38.2196245Z ##[group]Check build summary support
+2026-06-29T18:35:38.2197095Z Build summary supported!
+2026-06-29T18:35:38.2197730Z ##[endgroup]
+2026-06-29T18:35:38.2251057Z ##[group]Run docker pull ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960
+2026-06-29T18:35:38.2251808Z [36;1mdocker pull ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960[0m
+2026-06-29T18:35:38.2252808Z [36;1mdocker tag ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960 ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960[0m
+2026-06-29T18:35:38.2253858Z [36;1mdocker tag ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960 ***.dkr.ecr.***.amazonaws.com/***:latest[0m
+2026-06-29T18:35:38.2254823Z [36;1mdocker push ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960[0m
+2026-06-29T18:35:38.2255400Z [36;1mdocker push ***.dkr.ecr.***.amazonaws.com/***:latest[0m
+2026-06-29T18:35:38.2289643Z shell: /usr/bin/bash -e {0}
+2026-06-29T18:35:38.2289935Z env:
+2026-06-29T18:35:38.2290219Z   AWS_REGION: ***
+2026-06-29T18:35:38.2290494Z   AWS_ACCOUNT_ID: ***
+2026-06-29T18:35:38.2290775Z   ECR_REPOSITORY_APP: ***
+2026-06-29T18:35:38.2291109Z   ECR_REPOSITORY_WORKER: ***
+2026-06-29T18:35:38.2291538Z   EB_APPLICATION: ***
+2026-06-29T18:35:38.2291868Z   EB_ENV_API: ***
+2026-06-29T18:35:38.2292230Z   EB_ENV_WORKER: ***
+2026-06-29T18:35:38.2292572Z   S3_BUCKET: ***
+2026-06-29T18:35:38.2292911Z   AWS_DEFAULT_REGION: ***
+2026-06-29T18:35:38.2293212Z   AWS_ACCESS_KEY_ID: ***
+2026-06-29T18:35:38.2293575Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-29T18:35:38.2293844Z ##[endgroup]
+2026-06-29T18:35:41.4454904Z test-aa10dc5-1782757960: Pulling from ***
+2026-06-29T18:35:42.5352772Z 55afa1ecc21d: Already exists
+2026-06-29T18:35:42.5363453Z 3f4c164634d2: Pulling fs layer
+2026-06-29T18:35:42.5363878Z 1d4d101ceaad: Pulling fs layer
+2026-06-29T18:35:42.5365945Z d10ff586f6bd: Pulling fs layer
+2026-06-29T18:35:42.5366389Z 21e5ec0c434b: Pulling fs layer
+2026-06-29T18:35:42.5366715Z 3305bca0cf7a: Pulling fs layer
+2026-06-29T18:35:42.5367231Z 90caa2519b56: Pulling fs layer
+2026-06-29T18:35:42.5367509Z 3c68cbd3f0d7: Pulling fs layer
+2026-06-29T18:35:42.5367809Z d4505bad3fb2: Pulling fs layer
+2026-06-29T18:35:42.5368077Z 98eef5091570: Pulling fs layer
+2026-06-29T18:35:42.5368352Z afa4dfdc6671: Pulling fs layer
+2026-06-29T18:35:42.5368635Z 180dab558b0e: Pulling fs layer
+2026-06-29T18:35:42.5368916Z 21e5ec0c434b: Waiting
+2026-06-29T18:35:42.5369169Z 3305bca0cf7a: Waiting
+2026-06-29T18:35:42.5369415Z 90caa2519b56: Waiting
+2026-06-29T18:35:42.5369669Z 3c68cbd3f0d7: Waiting
+2026-06-29T18:35:42.5369917Z d4505bad3fb2: Waiting
+2026-06-29T18:35:42.5370171Z 180dab558b0e: Waiting
+2026-06-29T18:35:42.5370434Z 98eef5091570: Waiting
+2026-06-29T18:35:42.5371107Z afa4dfdc6671: Waiting
+2026-06-29T18:35:44.2911033Z d10ff586f6bd: Verifying Checksum
+2026-06-29T18:35:44.2911613Z d10ff586f6bd: Download complete
+2026-06-29T18:35:46.1182685Z 1d4d101ceaad: Verifying Checksum
+2026-06-29T18:35:46.1183275Z 1d4d101ceaad: Download complete
+2026-06-29T18:35:47.7669035Z 3305bca0cf7a: Download complete
+2026-06-29T18:35:48.6622775Z 21e5ec0c434b: Verifying Checksum
+2026-06-29T18:35:48.6623440Z 21e5ec0c434b: Download complete
+2026-06-29T18:35:49.6881358Z 3f4c164634d2: Verifying Checksum
+2026-06-29T18:35:49.6881908Z 3f4c164634d2: Download complete
+2026-06-29T18:35:49.9597629Z 90caa2519b56: Download complete
+2026-06-29T18:35:51.1651534Z 3f4c164634d2: Pull complete
+2026-06-29T18:35:51.2053566Z 1d4d101ceaad: Pull complete
+2026-06-29T18:35:51.2136039Z d10ff586f6bd: Pull complete
+2026-06-29T18:35:51.4219931Z 21e5ec0c434b: Pull complete
+2026-06-29T18:35:51.4283695Z 3305bca0cf7a: Pull complete
+2026-06-29T18:35:51.4368100Z 90caa2519b56: Pull complete
+2026-06-29T18:35:52.2509205Z 98eef5091570: Verifying Checksum
+2026-06-29T18:35:52.2509718Z 98eef5091570: Download complete
+2026-06-29T18:35:52.4455947Z d4505bad3fb2: Verifying Checksum
+2026-06-29T18:35:52.4456481Z d4505bad3fb2: Download complete
+2026-06-29T18:35:53.8712550Z afa4dfdc6671: Verifying Checksum
+2026-06-29T18:35:53.8713047Z afa4dfdc6671: Download complete
+2026-06-29T18:35:54.0980768Z 180dab558b0e: Verifying Checksum
+2026-06-29T18:35:54.0981266Z 180dab558b0e: Download complete
+2026-06-29T18:36:09.0434227Z 3c68cbd3f0d7: Verifying Checksum
+2026-06-29T18:36:09.0434619Z 3c68cbd3f0d7: Download complete
+2026-06-29T18:36:27.5275511Z 3c68cbd3f0d7: Pull complete
+2026-06-29T18:36:27.6810471Z d4505bad3fb2: Pull complete
+2026-06-29T18:36:27.7070862Z 98eef5091570: Pull complete
+2026-06-29T18:36:27.7257868Z afa4dfdc6671: Pull complete
+2026-06-29T18:36:27.7338130Z 180dab558b0e: Pull complete
+2026-06-29T18:36:27.7372871Z Digest: sha256:d58481a5cd8dd231a5243cf0678e52bd538fb487329faad5b4f2f28c665d33e6
+2026-06-29T18:36:27.7382125Z Status: Downloaded newer image for ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960
+2026-06-29T18:36:27.7389704Z ***.dkr.ecr.***.amazonaws.com/***:test-aa10dc5-1782757960
+2026-06-29T18:36:27.8289935Z The push refers to repository [***.dkr.ecr.***.amazonaws.com/***]
+2026-06-29T18:36:28.8342325Z c455ef64b6e3: Preparing
+2026-06-29T18:36:28.8343450Z 8541c7cf4ef9: Preparing
+2026-06-29T18:36:28.8343871Z 53fc456257a3: Preparing
+2026-06-29T18:36:28.8344399Z c897fb326445: Preparing
+2026-06-29T18:36:28.8344780Z f9f9e7108a9b: Preparing
+2026-06-29T18:36:28.8345135Z 7893337ece25: Preparing
+2026-06-29T18:36:28.8345500Z 395576eb9bfc: Preparing
+2026-06-29T18:36:28.8345895Z 43784a7f8bac: Preparing
+2026-06-29T18:36:28.8346229Z dd812e67e586: Preparing
+2026-06-29T18:36:28.8346485Z fd246171abbe: Preparing
+2026-06-29T18:36:28.8346933Z 94ba1b56d694: Preparing
+2026-06-29T18:36:28.8349459Z 34884abbe928: Preparing
+2026-06-29T18:36:28.8349865Z 7893337ece25: Waiting
+2026-06-29T18:36:28.8350233Z 395576eb9bfc: Waiting
+2026-06-29T18:36:28.8350575Z 43784a7f8bac: Waiting
+2026-06-29T18:36:28.8350948Z dd812e67e586: Waiting
+2026-06-29T18:36:28.8351303Z fd246171abbe: Waiting
+2026-06-29T18:36:28.8351666Z 94ba1b56d694: Waiting
+2026-06-29T18:36:28.8352032Z 34884abbe928: Waiting
+2026-06-29T18:36:33.9042618Z c455ef64b6e3: Pushed
+2026-06-29T18:36:34.0081067Z 8541c7cf4ef9: Pushed
+2026-06-29T18:36:34.5517919Z 53fc456257a3: Pushed
+2026-06-29T18:36:34.9963044Z c897fb326445: Pushed
+2026-06-29T18:36:35.9261723Z dd812e67e586: Layer already exists
+2026-06-29T18:36:36.8813802Z fd246171abbe: Layer already exists
+2026-06-29T18:36:37.9237991Z 94ba1b56d694: Layer already exists
+2026-06-29T18:36:38.8911344Z 34884abbe928: Layer already exists
+2026-06-29T18:36:39.0152661Z 395576eb9bfc: Pushed
+2026-06-29T18:36:39.7827594Z 7893337ece25: Pushed
+2026-06-29T18:36:41.5284264Z 43784a7f8bac: Pushed
+2026-06-29T18:37:08.5184543Z f9f9e7108a9b: Pushed
+2026-06-29T18:37:14.9049204Z test-aa10dc5-1782757960: digest: sha256:f1848b7c269b9b9d68fcca4e39482c8bcd5dd71cc50dc44d4b127b17ac436795 size: 2834
+2026-06-29T18:37:14.9565695Z The push refers to repository [***.dkr.ecr.***.amazonaws.com/***]
+2026-06-29T18:37:15.9272183Z c455ef64b6e3: Preparing
+2026-06-29T18:37:15.9272832Z 8541c7cf4ef9: Preparing
+2026-06-29T18:37:15.9273735Z 53fc456257a3: Preparing
+2026-06-29T18:37:15.9274178Z c897fb326445: Preparing
+2026-06-29T18:37:15.9274669Z f9f9e7108a9b: Preparing
+2026-06-29T18:37:15.9274917Z 7893337ece25: Preparing
+2026-06-29T18:37:15.9275254Z 395576eb9bfc: Preparing
+2026-06-29T18:37:15.9275541Z 43784a7f8bac: Preparing
+2026-06-29T18:37:15.9275785Z dd812e67e586: Preparing
+2026-06-29T18:37:15.9276017Z fd246171abbe: Preparing
+2026-06-29T18:37:15.9276251Z 94ba1b56d694: Preparing
+2026-06-29T18:37:15.9276486Z 34884abbe928: Preparing
+2026-06-29T18:37:15.9276723Z 7893337ece25: Waiting
+2026-06-29T18:37:15.9277208Z 395576eb9bfc: Waiting
+2026-06-29T18:37:15.9277440Z 43784a7f8bac: Waiting
+2026-06-29T18:37:15.9277703Z dd812e67e586: Waiting
+2026-06-29T18:37:15.9277936Z fd246171abbe: Waiting
+2026-06-29T18:37:15.9278157Z 94ba1b56d694: Waiting
+2026-06-29T18:37:15.9278394Z 34884abbe928: Waiting
+2026-06-29T18:37:16.8415246Z 8541c7cf4ef9: Layer already exists
+2026-06-29T18:37:16.8473972Z 53fc456257a3: Layer already exists
+2026-06-29T18:37:16.8481000Z c897fb326445: Layer already exists
+2026-06-29T18:37:16.8504813Z c455ef64b6e3: Layer already exists
+2026-06-29T18:37:16.8521350Z f9f9e7108a9b: Layer already exists
+2026-06-29T18:37:17.8616229Z fd246171abbe: Layer already exists
+2026-06-29T18:37:17.8661015Z 43784a7f8bac: Layer already exists
+2026-06-29T18:37:17.8675825Z 7893337ece25: Layer already exists
+2026-06-29T18:37:17.8697901Z dd812e67e586: Layer already exists
+2026-06-29T18:37:17.8735888Z 395576eb9bfc: Layer already exists
+2026-06-29T18:37:18.7797277Z 34884abbe928: Layer already exists
+2026-06-29T18:37:18.7797846Z 94ba1b56d694: Layer already exists
+2026-06-29T18:37:20.6611129Z latest: digest: sha256:f1848b7c269b9b9d68fcca4e39482c8bcd5dd71cc50dc44d4b127b17ac436795 size: 2834
+2026-06-29T18:37:20.6729298Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T18:37:20.6730500Z Post job cleanup.
+2026-06-29T18:37:20.9266332Z ##[group]Generating build summary
+2026-06-29T18:37:20.9271195Z exporting build record to /home/runner/work/_temp/docker-actions-toolkit-OJbUUz/export
+2026-06-29T18:37:20.9284223Z (node:3916) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-29T18:37:20.9285355Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-29T18:37:21.0968983Z [command]/usr/bin/docker buildx history export --builder builder-7925546f-cb0e-455b-8bc2-3849f65afb20 --output /home/runner/work/_temp/docker-actions-toolkit-OJbUUz/export/ssangnd~yehub-platform-clone-for-testing~M65ZEX.dockerbuild m65zexxx287hjk7x78pxc6jqg --finalize
+2026-06-29T18:37:21.3266149Z Build record written to /home/runner/work/_temp/docker-actions-toolkit-OJbUUz/export/ssangnd~yehub-platform-clone-for-testing~M65ZEX.dockerbuild (64.81 KB)
+2026-06-29T18:37:21.3284754Z Uploading ssangnd~yehub-platform-clone-for-testing~M65ZEX.dockerbuild to blob storage
+2026-06-29T18:37:21.4910639Z Beginning upload of artifact content to blob storage
+2026-06-29T18:37:21.4989360Z (node:3916) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-06-29T18:37:21.4997219Z Uploaded bytes 65536
+2026-06-29T18:37:21.4998939Z Uploaded bytes 66369
+2026-06-29T18:37:21.5337958Z Finished uploading artifact content to blob storage!
+2026-06-29T18:37:21.5342145Z SHA256 hash of uploaded artifact is 65364904b3844db27e4299e77e25c6758a393e3f42ab850a3e0310c2f928fb14
+2026-06-29T18:37:21.5344537Z Finalizing artifact upload
+2026-06-29T18:37:21.7167512Z Artifact successfully finalized (7961139641)
+2026-06-29T18:37:21.7168723Z Artifact download URL: https://github.com/ssangnd/yehub-platform-clone-for-testing/actions/runs/28394190050/artifacts/7961139641
+2026-06-29T18:37:21.7187450Z Writing summary
+2026-06-29T18:37:21.7200490Z ##[endgroup]
+2026-06-29T18:37:21.7201446Z ##[group]Removing temp folder /home/runner/work/_temp/docker-actions-toolkit-ST3Ggj
+2026-06-29T18:37:21.7203353Z ##[endgroup]
+2026-06-29T18:37:21.7203981Z ##[group]Post cache
+2026-06-29T18:37:21.7205318Z State not set
+2026-06-29T18:37:21.7205890Z ##[endgroup]
+2026-06-29T18:37:21.7375830Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T18:37:21.7377534Z Post job cleanup.
+2026-06-29T18:37:21.9965646Z ##[group]Removing builder
+2026-06-29T18:37:21.9978153Z (node:4071) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-29T18:37:21.9979338Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-29T18:37:22.0851313Z [command]/usr/bin/docker buildx rm builder-7925546f-cb0e-455b-8bc2-3849f65afb20
+2026-06-29T18:37:26.6061101Z builder-7925546f-cb0e-455b-8bc2-3849f65afb20 removed
+2026-06-29T18:37:26.6106126Z ##[endgroup]
+2026-06-29T18:37:26.6106963Z ##[group]Cleaning up certificates
+2026-06-29T18:37:26.6108562Z ##[endgroup]
+2026-06-29T18:37:26.6109048Z ##[group]Post cache
+2026-06-29T18:37:26.6110922Z State not set
+2026-06-29T18:37:26.6111491Z ##[endgroup]
+2026-06-29T18:37:26.6290045Z Post job cleanup.
+2026-06-29T18:37:26.6927005Z Logging out of registry ***.dkr.ecr.***.amazonaws.com
+2026-06-29T18:37:26.7244232Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T18:37:26.7245443Z Post job cleanup.
+2026-06-29T18:37:26.8334825Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-29T18:37:26.8336038Z Post job cleanup.
+2026-06-29T18:37:26.9180669Z [command]/usr/bin/git version
+2026-06-29T18:37:26.9249900Z git version 2.54.0
+2026-06-29T18:37:26.9286101Z Temporarily overriding HOME='/home/runner/work/_temp/7bb10378-a8d7-48e1-8f91-7046110c6f78' before making global git config changes
+2026-06-29T18:37:26.9287589Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-29T18:37:26.9292287Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/yehub-platform-clone-for-testing/yehub-platform-clone-for-testing
+2026-06-29T18:37:26.9328805Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-06-29T18:37:26.9365297Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-06-29T18:37:26.9601036Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-29T18:37:26.9628634Z http.https://github.com/.extraheader
+2026-06-29T18:37:26.9639167Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-06-29T18:37:26.9671630Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-06-29T18:37:26.9906308Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-29T18:37:26.9945727Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-06-29T18:37:27.0311603Z Evaluate and set job outputs
+2026-06-29T18:37:27.0317256Z Set output 'image_tag'
+2026-06-29T18:37:27.0326116Z ##[warning]Skip output 'app_image_uri' since it may contain secret.
+2026-06-29T18:37:27.0333060Z ##[warning]Skip output 'worker_image_uri' since it may contain secret.
+2026-06-29T18:37:27.0334312Z Cleaning up orphan processes
+2026-06-29T18:37:27.1593779Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, aws-actions/configure-aws-credentials@v4, docker/build-push-action@v6, docker/setup-buildx-action@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

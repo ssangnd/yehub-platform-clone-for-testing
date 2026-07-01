@@ -148,6 +148,7 @@ jobs:
         with:
           context: yehub-be
           file: yehub-be/Dockerfile
+          target: production
           push: true
           tags: |
             ${{ steps.meta.outputs.app_uri }}
@@ -156,13 +157,23 @@ jobs:
           cache-to: type=gha,mode=max
           platforms: linux/amd64
 
-      - name: Tag and push Worker image (same Dockerfile, different ECR repo)
-        run: |
-          docker pull ${{ steps.meta.outputs.app_uri }}
-          docker tag ${{ steps.meta.outputs.app_uri }} ${{ steps.meta.outputs.worker_uri }}
-          docker tag ${{ steps.meta.outputs.app_uri }} ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_WORKER }}:latest
-          docker push ${{ steps.meta.outputs.worker_uri }}
-          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_WORKER }}:latest
+      # Separate build (not a re-tag of the API image): the worker needs its
+      # own CMD (dist/src/worker) baked in via the Dockerfile's "worker"
+      # stage, since EB's Dockerrun.aws.json "Cmd" override isn't honored on
+      # the AL2023 single-container Docker platform.
+      - name: Build and push Worker image
+        uses: docker/build-push-action@v6
+        with:
+          context: yehub-be
+          file: yehub-be/Dockerfile
+          target: worker
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.worker_uri }}
+            ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY_WORKER }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
 
   # ============================================================
   # Job 4: Scan Docker image with Trivy
@@ -247,7 +258,6 @@ jobs:
               "Update": "true"
             },
             "Ports": [{ "ContainerPort": 3000, "HostPort": 3000 }],
-            "Cmd": ["node", "dist/src/main"],
             "Volumes": [],
             "Env": []
           }
@@ -327,8 +337,7 @@ jobs:
               "Name": "${IMAGE_URI}",
               "Update": "true"
             },
-            "Ports": [{ "ContainerPort": 3001, "HostPort": 3001 }],
-            "Cmd": ["node", "dist/src/worker"]
+            "Ports": [{ "ContainerPort": 3001, "HostPort": 3001 }]
           }
           EOF
           echo "=== Dockerrun.aws.json ==="
