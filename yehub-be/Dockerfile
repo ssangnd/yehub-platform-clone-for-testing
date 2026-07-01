@@ -26,3 +26,12 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./
 EXPOSE 3000
 CMD ["node", "dist/src/main"]
+
+# ── Stage 5: Worker (same artifacts as production, different entrypoint) ──
+# EB's Dockerrun.aws.json "Cmd" override is NOT supported on the AL2023
+# single-container Docker platform (only Image/Ports/Volumes/Logging are),
+# so the worker's command must be baked into its own image via this stage
+# rather than relied on as a deploy-time override.
+FROM production AS worker
+EXPOSE 3001
+CMD ["node", "dist/src/worker"]
