@@ -58,7 +58,8 @@ jobs:
       - name: Set image tag
         id: meta
         run: |
-          TAG="test-$(git rev-parse --short HEAD)-$(date +%s)"
+          VERSION=$(grep -m1 '"version"' yehub-be/package.json | sed -E 's/.*"version": *"([^"]+)".*/\1/')
+          TAG="${VERSION}-$(git rev-parse --short HEAD)"
           BASE=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
           echo "app_uri=${BASE}/${{ env.ECR_REPOSITORY_APP }}:${TAG}" >> $GITHUB_OUTPUT
@@ -100,7 +101,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: yehub-be/.ebextensions
+          sparse-checkout: yehub-be/.ebextensions-api
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -143,7 +144,7 @@ jobs:
           # (no Dockerfile, or EB tries to build instead of pulling ECR image)
           rm -rf bundle && mkdir bundle
           cp Dockerrun.aws.json bundle/
-          cp -r yehub-be/.ebextensions bundle/.ebextensions
+          cp -r yehub-be/.ebextensions-api bundle/.ebextensions
           cd bundle
           zip -r ../api-${TAG}.zip Dockerrun.aws.json .ebextensions/
           cd ..
@@ -199,7 +200,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: yehub-be/.ebextensions
+          sparse-checkout: yehub-be/.ebextensions-worker
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -235,7 +236,7 @@ jobs:
       - name: Package and upload to S3
         run: |
           TAG=${{ needs.build-push.outputs.image_tag }}
-          cp -r yehub-be/.ebextensions .ebextensions
+          cp -r yehub-be/.ebextensions-worker .ebextensions
           zip -r worker-${TAG}.zip Dockerrun.aws.json .ebextensions/
           aws s3 cp worker-${TAG}.zip s3://${{ env.S3_BUCKET }}/deployments/worker-${TAG}.zip
 

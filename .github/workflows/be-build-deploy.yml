@@ -258,12 +258,12 @@ jobs:
       - name: Checkout for ebextensions
         uses: actions/checkout@v4
         with:
-          sparse-checkout: yehub-be/.ebextensions
+          sparse-checkout: yehub-be/.ebextensions-api
 
       - name: Package with ebextensions and upload to S3
         run: |
           TAG=${{ needs.build-push.outputs.image_tag }}
-          cp -r yehub-be/.ebextensions .ebextensions
+          cp -r yehub-be/.ebextensions-api .ebextensions
           zip -r api-${TAG}.zip Dockerrun.aws.json .ebextensions/
           aws s3 cp api-${TAG}.zip s3://${{ env.S3_BUCKET }}/deployments/api-${TAG}.zip
 
@@ -337,12 +337,12 @@ jobs:
       - name: Checkout for ebextensions
         uses: actions/checkout@v4
         with:
-          sparse-checkout: yehub-be/.ebextensions
+          sparse-checkout: yehub-be/.ebextensions-worker
 
       - name: Package worker with ebextensions and upload to S3
         run: |
           TAG=${{ needs.build-push.outputs.image_tag }}
-          cp -r yehub-be/.ebextensions .ebextensions
+          cp -r yehub-be/.ebextensions-worker .ebextensions
           zip -r worker-${TAG}.zip Dockerrun.aws.json .ebextensions/
           aws s3 cp worker-${TAG}.zip s3://${{ env.S3_BUCKET }}/deployments/worker-${TAG}.zip
 
